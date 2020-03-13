@@ -12,7 +12,7 @@ public interface EmployeeService {
 
     boolean addEmployee(Employee employee);
 
-    boolean updateEmploye(Employee employee);
+    boolean updateEmployee(Employee employee);
 
     List<Employee> queryEmployees();
 

@@ -33,7 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public boolean updateEmploye(Employee employee) {
+    public boolean updateEmployee(Employee employee) {
 
         Integer result = employeeMapper.updateByPrimaryKey(employee);
 
