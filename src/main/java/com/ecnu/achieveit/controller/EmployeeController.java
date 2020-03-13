@@ -46,7 +46,7 @@ public class EmployeeController {
 
     @PutMapping("/employee")
     public Object modify(Employee employee){
-        Object result = employeeService.updateEmploye(employee);
+        Object result = employeeService.updateEmployee(employee);
         if(result.equals(0)){
             return RestResponse.error();
         }
