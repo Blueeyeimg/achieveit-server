@@ -51,4 +51,19 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         return employeeMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<Employee> queryBasicEmployees() {
+        return employeeMapper.selectBasicEmployeeList();
+    }
+
+    @Override
+    public Employee queryBasicEmployeeById(String id) {
+        return employeeMapper.selectBasicByPrimaryKey(id);
+    }
+
+    @Override
+    public Employee queryBasicEmployeeByEmail(String email) {
+        return employeeMapper.selectBasicByEmail(email);
+    }
 }

@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @ToString
 public class Timesheet implements Serializable {
-    
+
     private Integer timesheetId;
 
     private String projectId;

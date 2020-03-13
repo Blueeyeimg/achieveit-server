@@ -17,4 +17,11 @@ public interface EmployeeService {
     List<Employee> queryEmployees();
 
     Employee queryEmployeeById(String id);
+
+    List<Employee> queryBasicEmployees();
+
+    Employee queryBasicEmployeeById(String id);
+
+    Employee queryBasicEmployeeByEmail(String email);
+
 }

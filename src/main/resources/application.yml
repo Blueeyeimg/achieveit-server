@@ -50,3 +50,4 @@ mybatis:
  #   map-underscore-to-camel-case: true # 开启驼峰映射,实现了字段与属性映射
   #模型所在的包名
   type-aliases-package: com.ecnu.achieveit.model
+

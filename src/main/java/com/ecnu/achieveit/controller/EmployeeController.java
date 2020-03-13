@@ -2,11 +2,9 @@ package com.ecnu.achieveit.controller;
 
 import com.ecnu.achieveit.model.Employee;
 import com.ecnu.achieveit.service.EmployeeService;
-import com.ecnu.achieveit.utility.RestResponse;
+import com.ecnu.achieveit.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class EmployeeController {

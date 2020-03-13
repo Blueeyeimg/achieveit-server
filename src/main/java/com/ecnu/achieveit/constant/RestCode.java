@@ -1,6 +1,10 @@
 package com.ecnu.achieveit.constant;
 
 
+/**
+ * @author 倪事通
+ */
+
 public enum RestCode {
 
     /**
@@ -30,7 +34,7 @@ public enum RestCode {
         return msg;
     }
 
-    private RestCode(int code, String msg) {
+    RestCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

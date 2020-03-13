@@ -1,4 +1,4 @@
-package com.ecnu.achieveit.utility;
+package com.ecnu.achieveit.util;
 
 import com.ecnu.achieveit.constant.RestCode;
 
@@ -37,6 +37,11 @@ public class RestResponse<T> {
 
     public static <T> RestResponse<T> error(RestCode restCode) {
         RestResponse<T> restResponse = new RestResponse<>(restCode.getCode(), restCode.getMsg());
+        return restResponse;
+    }
+
+    public static <T> RestResponse<T> error(String msg) {
+        RestResponse<T> restResponse = new RestResponse<>(3, msg);
         return restResponse;
     }
 

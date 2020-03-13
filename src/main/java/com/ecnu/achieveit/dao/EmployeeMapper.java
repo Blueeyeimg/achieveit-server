@@ -56,4 +56,13 @@ public interface EmployeeMapper {
     int updateByPrimaryKey(Employee record);
 
     List<Employee> selectEmployeeList();
+
+    List<Employee> selectBasicEmployeeList();
+
+    Employee selectBasicByPrimaryKey(String employeeId);
+
+    Employee selectBasicByEmail(String email);
+
+    Employee selectByEmail(String email);
+
 }
