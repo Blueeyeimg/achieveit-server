@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Object exceptionHandler(HttpServletRequest req, NullPointerException e){
         LogUtil.i("发生空指针异常！原因是:",e.toString());
-        return RestResponse.error("空指针异常");
+        return RestResponse.fail("空指针异常");
     }
 
 
@@ -41,6 +41,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Object exceptionHandler(HttpServletRequest req, Exception e){
        LogUtil.i("异常:",e.toString());
-        return RestResponse.error(e.getMessage());
+        return RestResponse.fail(e.getMessage());
     }
 }

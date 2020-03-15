@@ -17,7 +17,7 @@ public class EmployeeController {
 
         Object result = employeeService.queryEmployees();
         if(result == null){
-            return RestResponse.error();
+            return RestResponse.fail();
         }
         return RestResponse.success(result);
     }
@@ -27,7 +27,7 @@ public class EmployeeController {
 
         Object result = employeeService.queryEmployeeById(id);
         if(result == null){
-            return RestResponse.error();
+            return RestResponse.fail();
         }
         return RestResponse.success(result);
     }
@@ -37,7 +37,7 @@ public class EmployeeController {
 
         Object result = employeeService.addEmployee(employee);
         if(result.equals(0)){
-            return RestResponse.error();
+            return RestResponse.fail();
         }
         return RestResponse.success(result);
     }
@@ -46,7 +46,7 @@ public class EmployeeController {
     public Object modify(Employee employee){
         Object result = employeeService.updateEmployee(employee);
         if(result.equals(0)){
-            return RestResponse.error();
+            return RestResponse.fail();
         }
         return RestResponse.success(result);
     }
@@ -55,7 +55,7 @@ public class EmployeeController {
     public Object remove(@PathVariable("id") String id){
         Object result = employeeService.deleteEmployeeById(id);
         if(result.equals(0)){
-            return RestResponse.error();
+            return RestResponse.fail();
         }
         return RestResponse.success(result);
     }

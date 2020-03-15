@@ -27,11 +27,11 @@ public class LoginController {
 
         boolean loginValid = loginService.login(user, password);
         if(!loginValid){
-            return RestResponse.error(RestCode.NO_PER);
+            return RestResponse.fail("user name or password is not correct.");
         }
         String token = jwtConfig.getToken(user+password);
         if (StringUtils.isEmpty(token)) {
-            return RestResponse.error(RestCode.FAIL);
+            return RestResponse.fail("Due to unknow reason, can not create token for this user.");
         }
         result.put("token",token);
         result.put("userName",user);

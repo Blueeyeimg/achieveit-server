@@ -20,8 +20,8 @@ public class RestResponse<T> {
           *这也就是所谓的工厂模式的应用,
      */
 
-    public static <T> RestResponse<T> success() {
-        return new RestResponse<>();
+    public static RestResponse<String> success() {
+        return RestResponse.success("");
     }
 
     public static <T> RestResponse<T> success(T data) {
@@ -30,18 +30,23 @@ public class RestResponse<T> {
         return restResponse;
     }
 
-    public static <T> RestResponse<T> error() {
+    public static RestResponse<String> fail() {
+        return RestResponse.fail("");
+    }
+
+    public static <T> RestResponse<T> fail(T data) {
         RestResponse<T> restResponse = new RestResponse<>(RestCode.FAIL.getCode(), RestCode.FAIL.getMsg());
+        restResponse.setData(data);
         return restResponse;
     }
 
-    public static <T> RestResponse<T> error(RestCode restCode) {
-        RestResponse<T> restResponse = new RestResponse<>(restCode.getCode(), restCode.getMsg());
-        return restResponse;
+    public static RestResponse<String> noPermission() {
+        return RestResponse.noPermission("");
     }
 
-    public static <T> RestResponse<T> error(String msg) {
-        RestResponse<T> restResponse = new RestResponse<>(3, msg);
+    public static <T> RestResponse<T> noPermission(T data) {
+        RestResponse<T> restResponse = new RestResponse<>(RestCode.NO_PER.getCode(), RestCode.NO_PER.getMsg());
+        restResponse.setData(data);
         return restResponse;
     }
 
