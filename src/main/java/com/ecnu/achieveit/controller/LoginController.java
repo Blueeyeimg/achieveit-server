@@ -1,6 +1,7 @@
 package com.ecnu.achieveit.controller;
 
 import com.ecnu.achieveit.constant.RestCode;
+import com.ecnu.achieveit.model.Employee;
 import com.ecnu.achieveit.service.LoginService;
 import com.ecnu.achieveit.util.JwtConfig;
 import com.ecnu.achieveit.util.RestResponse;
@@ -25,16 +26,17 @@ public class LoginController {
                                      @RequestParam("password") String password){
         Map<String,String> result = new HashMap<>();
 
-        boolean loginValid = loginService.login(user, password);
-        if(!loginValid){
+        Employee userObject = loginService.login(user, password);
+        if(userObject == null){
             return RestResponse.fail("user name or password is not correct.");
         }
-        String token = jwtConfig.getToken(user+password);
+
+        String token = jwtConfig.getToken(userObject.getEmployeeId());
         if (StringUtils.isEmpty(token)) {
             return RestResponse.fail("Due to unknow reason, can not create token for this user.");
         }
         result.put("token",token);
-        result.put("userName",user);
+        result.put("userName",userObject.getEmployeeName());
 
         return RestResponse.success(result);
     }

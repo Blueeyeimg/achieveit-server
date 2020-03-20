@@ -19,7 +19,7 @@ public class LoginServiceImpl implements LoginService {
     private EmployeeMapper employeeMapper;
 
     @Override
-    public boolean login(String userIdOrEmail, String password) {
+    public Employee login(String userIdOrEmail, String password) {
 
         Employee user = employeeMapper.selectByPrimaryKey(userIdOrEmail);
         if(user == null){
@@ -32,14 +32,14 @@ public class LoginServiceImpl implements LoginService {
         }
         if(user == null){
             LogUtil.i("user not found..");
-            return false;
+            return null;
         }
         if(user.getPassword().equals(password)){
             LogUtil.i("login success.");
-            return true;
+            return user;
         }
         LogUtil.i("password is not correct.");
-        return false;
+        return null;
     }
 
     @Override

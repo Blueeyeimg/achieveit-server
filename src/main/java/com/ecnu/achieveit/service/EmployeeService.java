@@ -24,4 +24,10 @@ public interface EmployeeService {
 
     Employee queryBasicEmployeeByEmail(String email);
 
+    boolean checkTitle(String userId,String title);
+
+    Employee queryBasicEmployeeByIdOrEmail(String idOrEmail);
+
+
+
 }

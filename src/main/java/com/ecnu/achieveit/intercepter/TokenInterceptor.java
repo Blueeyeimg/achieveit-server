@@ -43,7 +43,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
             throw new Exception(jwtConfig.getHeader() + "失效，请重新登录。");
         }
         //设置 identityId 用户身份ID
-        request.setAttribute("identityId", claims.getSubject());
+        request.setAttribute("userId", claims.getSubject());
         return true;
     }
 }

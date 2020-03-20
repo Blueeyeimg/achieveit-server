@@ -7,7 +7,7 @@ import com.ecnu.achieveit.model.Employee;
  */
 public interface LoginService {
 
-    boolean login(String userIdOrEmail, String password);
+    Employee login(String userIdOrEmail, String password);
 
     /**
      *

@@ -1,5 +1,23 @@
 # 数据源配置
 spring:
+  # activiti default configuration
+  activiti:
+    database-schema-update: true
+    check-process-definitions: true
+    process-definition-location-prefix: classpath:/processes/
+    #process-definition-location-suffixes:
+    #  - **.bpmn
+    #  - **.bpmn20.xml
+    history-level: full
+    #mail
+    mail-server-default-from: achieveitgroup09@163.com
+    mail-server-host: smtp.163.com
+    mail-server-port: 465
+    mail-server-password: FMBCFQAIECMXDTIE
+    mail-server-use-ssl: true
+    mail-server-user-name: achieveitgroup09@163.com
+
+
   http:
     encoding:
       force: true
@@ -50,4 +68,5 @@ mybatis:
  #   map-underscore-to-camel-case: true # 开启驼峰映射,实现了字段与属性映射
   #模型所在的包名
   type-aliases-package: com.ecnu.achieveit.model
+
 
