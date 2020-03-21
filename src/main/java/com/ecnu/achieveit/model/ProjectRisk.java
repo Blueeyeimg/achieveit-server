@@ -1,8 +1,6 @@
 package com.ecnu.achieveit.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -12,6 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectRisk extends ProjectRiskKey implements Serializable {
 
     private String type;
@@ -32,4 +32,16 @@ public class ProjectRisk extends ProjectRiskKey implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
+    public ProjectRisk(String projectId, String riskId, String type, String description, Integer riskLevel, String influence, String reactiveStrategy, String riskState, String riskOwnerId, Long riskTrackFrequency) {
+        super(projectId, riskId);
+        this.type = type;
+        this.description = description;
+        this.riskLevel = riskLevel;
+        this.influence = influence;
+        this.reactiveStrategy = reactiveStrategy;
+        this.riskState = riskState;
+        this.riskOwnerId = riskOwnerId;
+        this.riskTrackFrequency = riskTrackFrequency;
+    }
 }

@@ -1,8 +1,24 @@
 # 数据源配置
 spring:
+
+  mail:
+    host: smtp.163.com
+    username: achieveitgroup09@163.com
+    password: FMBCFQAIECMXDTIE # 授权码
+    protocol: smtp
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.port: 465
+    properties.mail.display.sendmail: DoubleFJ
+    properties.mail.display.sendname: Spring Boot Email
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    default-encoding: utf-8
+    from: achieveitgroup09@163.com
+
   # activiti default configuration
   activiti:
-    database-schema-update: true
+    database-schema-update: false
     check-process-definitions: true
     process-definition-location-prefix: classpath:/processes/
     #process-definition-location-suffixes:

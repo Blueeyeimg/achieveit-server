@@ -16,4 +16,8 @@ public interface NewProjectFlowService {
     boolean approveProject(String taskId, String userId);
 
     boolean disapproveProject(String taskId, String userId);
+
+    boolean sendApprovedEmail(String projectManagerId, ProjectBasicInfo projectBasicInfo);
+
+    boolean sendDisapprovedEmail(String projectManagerId, ProjectBasicInfo projectBasicInfo);
 }

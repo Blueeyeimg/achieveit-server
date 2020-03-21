@@ -8,27 +8,17 @@ import com.ecnu.achieveit.model.ProjectBasicInfo;
 import com.ecnu.achieveit.modelview.ProjectBasicInfoView;
 import com.ecnu.achieveit.service.EmployeeService;
 import com.ecnu.achieveit.service.NewProjectFlowService;
+import com.ecnu.achieveit.service.impl.IMailServiceImpl;
 import com.ecnu.achieveit.util.RestResponse;
-import com.sun.javafx.tk.Toolkit;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.runtime.ProcessInstanceBuilder;
-import org.activiti.engine.task.Task;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.ResourceUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class NewProjectController {
@@ -45,11 +35,30 @@ public class NewProjectController {
     @Autowired
     private NewProjectFlowService newProjectFlowService;
 
-    @GetMapping("/mail")
-    public Object sendEmail(){
+    @Autowired
+    private IMailServiceImpl mailService;
 
-        runtimeService.startProcessInstanceByKey("mail_test");
-        return RestResponse.success();
+    @Qualifier("templateEngine")
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    @GetMapping("/mail/{to}")
+    public Object sendEmail(@PathVariable("to") String to){
+        try {
+            Context context = new Context();
+            context.setVariable("project_name", "《我与世界》");
+            context.setVariable("user", "ocean");
+            context.setVariable("boss", "robert");
+            String emailContent = templateEngine.process("new_project_notify", context);
+
+            mailService.sendHtmlMail(to, "这是模板邮件", emailContent);
+
+            /*mailService.sendSimpleMail("achieveitgroup09@163.com","测试邮件","这次不会乱码了吧！");*/
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return RestResponse.fail("邮件发送失败");
+        }
+        return RestResponse.success("邮件发送成功");
     }
 
     @PostMapping("/newproject")

@@ -88,4 +88,9 @@ public class EmployeeServiceImpl implements EmployeeService{
         }
         return employee;
     }
+
+    @Override
+    public List<Employee> queryBasicEmployeeGroup(String group) {
+        return null;
+    }
 }

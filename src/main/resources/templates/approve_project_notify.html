@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新项目审批通过</title>
+    <style>
+        body {
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #welcome {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="welcome">
+    <p>
+        亲爱的项目经理
+        <span th:text="${user}"></span>
+        :
+    </p>
+    <p>
+        您的项目
+        <span th:text="${project_name}"></span>
+        已由项目上级
+        <span th:text="${boss}"></span>
+        审批通过
+    </p>
+
+</div>
+</body>
+</html>

@@ -28,6 +28,6 @@ public interface EmployeeService {
 
     Employee queryBasicEmployeeByIdOrEmail(String idOrEmail);
 
-
+    List<Employee> queryBasicEmployeeGroup(String group);
 
 }

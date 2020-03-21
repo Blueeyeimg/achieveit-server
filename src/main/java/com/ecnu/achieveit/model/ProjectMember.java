@@ -1,8 +1,6 @@
 package com.ecnu.achieveit.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -12,6 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectMember extends ProjectMemberKey implements Serializable {
 
     private String bossInProjectId;
@@ -33,5 +33,16 @@ public class ProjectMember extends ProjectMemberKey implements Serializable {
     private Integer faultTrack;
 
     private static final long serialVersionUID = 1L;
+
+    public ProjectMember(String projectId, String employeeId, String bossInProjectId, String role, String accessGit, String accessFileSystem, Integer inEmailList, Integer inTimesheetModule, Integer faultTrack) {
+        super(projectId, employeeId);
+        this.bossInProjectId = bossInProjectId;
+        this.role = role;
+        this.accessGit = accessGit;
+        this.accessFileSystem = accessFileSystem;
+        this.inEmailList = inEmailList;
+        this.inTimesheetModule = inTimesheetModule;
+        this.faultTrack = faultTrack;
+    }
 
 }

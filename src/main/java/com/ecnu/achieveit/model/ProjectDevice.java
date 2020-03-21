@@ -1,8 +1,6 @@
 package com.ecnu.achieveit.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +11,8 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectDevice extends ProjectDeviceKey implements Serializable {
 
     private String type;
@@ -42,5 +42,16 @@ public class ProjectDevice extends ProjectDeviceKey implements Serializable {
     private Date returnDate;
 
     private static final long serialVersionUID = 1L;
+
+    public ProjectDevice(String projectId, String deviceId, String type, Integer state, String deviceManagerId, Date checkinDate, Integer totalUseTime, Date lastVerifyDate, Date returnDate) {
+        super(projectId, deviceId);
+        this.type = type;
+        this.state = state;
+        this.deviceManagerId = deviceManagerId;
+        this.checkinDate = checkinDate;
+        this.totalUseTime = totalUseTime;
+        this.lastVerifyDate = lastVerifyDate;
+        this.returnDate = returnDate;
+    }
 
 }
