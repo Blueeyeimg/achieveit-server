@@ -90,7 +90,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public List<Employee> queryBasicEmployeeGroup(String group) {
-        return null;
+    public List<Employee> queryBasicEmployeeGroup(String titleId) {
+        return employeeMapper.selectBasicEmployeeListByTitleId(titleId);
     }
 }

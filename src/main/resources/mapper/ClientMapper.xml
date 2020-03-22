@@ -146,4 +146,11 @@
       address = #{address,jdbcType=VARCHAR}
     where client_id = #{clientId,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectClientList" resultMap="BaseResultMap">
+     select
+     <include refid="Base_Column_List"/>
+     from client
+  </select>
+
 </mapper>

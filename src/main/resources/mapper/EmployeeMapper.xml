@@ -177,4 +177,14 @@
       <include refid="Basic_Column_List" />
     from employee
   </select>
+
+  <select id="selectBasicEmployeeListByTitleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+      <include refid="Basic_Column_List" />
+      from employee
+      where employee_id in
+        (select employee_id
+        from employee_title
+        where title_id = #{titleId,jdbcType=VARCHAR})
+  </select>
 </mapper>

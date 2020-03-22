@@ -49,6 +49,7 @@ public class NewProjectController {
             context.setVariable("project_name", "《我与世界》");
             context.setVariable("user", "ocean");
             context.setVariable("boss", "robert");
+            context.setVariable("message", "");
             String emailContent = templateEngine.process("new_project_notify", context);
 
             mailService.sendHtmlMail(to, "这是模板邮件", emailContent);
