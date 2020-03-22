@@ -40,30 +40,6 @@
     from project_basic_info
     where project_id = #{projectId,jdbcType=VARCHAR}
   </select>
-  <select id="selectByEmployeeId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from project_basic_info
-    where project_id in (select project_id from project_member where employee_id = #{employeeId,jdbcType=VARCHAR})
-  </select>
-  <select id="selectByClientId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from project_basic_info
-    where client_id = #{clientId,jdbcType=VARCHAR}
-  </select>
-  <select id="selectByState" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from project_basic_info
-    where state = #{state,jdbcType=VARCHAR}
-  </select>
-  <select id="selectByBossId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from project_basic_info
-    where project_boss_id = #{bossId,jdbcType=VARCHAR}
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - @mbg.generated
