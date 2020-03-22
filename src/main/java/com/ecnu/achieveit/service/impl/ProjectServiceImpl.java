@@ -6,6 +6,8 @@ import com.ecnu.achieveit.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
@@ -24,5 +26,39 @@ public class ProjectServiceImpl implements ProjectService {
         Integer result = projectBasicInfoMapper.updateByPrimaryKeySelective(projectBasicInfo);
 
         return !result.equals(0);
+    }
+
+    @Override
+    public ProjectBasicInfo querryProjectByPrimaryKey(String projectId) {
+        ProjectBasicInfo result = projectBasicInfoMapper.selectByPrimaryKey(projectId);
+        return result;
+    }
+
+    @Override
+    public List<ProjectBasicInfo> querryProjectByEmployeeId(String employeeId) {
+        List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByEmployeeId(employeeId);
+
+        return result;
+    }
+
+    @Override
+    public List<ProjectBasicInfo> querryProjectByClientId(String clientId) {
+        List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByClientId(clientId);
+
+        return result;
+    }
+
+    @Override
+    public List<ProjectBasicInfo> querryProjectByState(String state) {
+        List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByState(state);
+
+        return result;
+    }
+
+    @Override
+    public List<ProjectBasicInfo> querryProjectByBossId(String bossId) {
+        List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByBossId(bossId);
+
+        return  result;
     }
 }
