@@ -50,9 +50,9 @@ public class NewProjectController {
             context.setVariable("user", "ocean");
             context.setVariable("boss", "robert");
             context.setVariable("message", "");
-            String emailContent = templateEngine.process("new_project_notify", context);
+            String emailContent = templateEngine.process("approve_project_notify", context);
 
-            mailService.sendHtmlMail(to, "这是模板邮件", emailContent);
+            mailService.sendHtmlMail(to, "这是模板邮件的测试", emailContent);
 
             /*mailService.sendSimpleMail("achieveitgroup09@163.com","测试邮件","这次不会乱码了吧！");*/
         }catch (Exception ex){

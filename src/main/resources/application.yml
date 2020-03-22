@@ -2,19 +2,19 @@
 spring:
 
   mail:
-    host: smtp.163.com
-    username: achieveitgroup09@163.com
-    password: FMBCFQAIECMXDTIE # 授权码
+    host: smtp.qq.com #smtp.163.com
+    username: 1730889216@qq.com  #163邮箱 achieveitgroup09@163.com
+    password: pglgrrtnvwrccccd #163邮箱授权码 FMBCFQAIECMXDTIE
     protocol: smtp
     properties.mail.smtp.auth: true
     properties.mail.smtp.port: 465
     properties.mail.display.sendmail: DoubleFJ
-    properties.mail.display.sendname: Spring Boot Email
+    properties.mail.display.sendname: AchieveIt09
     properties.mail.smtp.starttls.enable: true
     properties.mail.smtp.starttls.required: true
     properties.mail.smtp.ssl.enable: true
     default-encoding: utf-8
-    from: achieveitgroup09@163.com
+    from: 1730889216@qq.com
 
   # activiti default configuration
   activiti:
@@ -25,13 +25,6 @@ spring:
     #  - **.bpmn
     #  - **.bpmn20.xml
     history-level: full
-    #mail
-    mail-server-default-from: achieveitgroup09@163.com
-    mail-server-host: smtp.163.com
-    mail-server-port: 465
-    mail-server-password: FMBCFQAIECMXDTIE
-    mail-server-use-ssl: true
-    mail-server-user-name: achieveitgroup09@163.com
 
 
   http:

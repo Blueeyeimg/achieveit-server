@@ -123,6 +123,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         variables.put("pass",1);
         taskService.complete(taskId,variables);
 
+        LogUtil.i("完成任务，开始发邮件");
         sendApprovedEmail(managerId,projectBasicInfo);
 
         return true;
@@ -163,30 +164,38 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         List<Employee> orgCongigs = employeeService.queryBasicEmployeeGroup(EmployeeTitle.ORG_CONFIG.getTitle());
         if(!ObjectUtils.isEmpty(orgCongigs)){
             String to = orgCongigs.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
+            LogUtil.i("即将发送邮件给" + to);
             sendApprovedEmailToGroup(to, projectBasicInfo.getProjectName(),
                     EmployeeTitle.ORG_CONFIG.getTitleName(), boss.getEmployeeName(),
                     "请登录AchieveIt系统为其建立配置库。");
+            LogUtil.i("已经向组织级配置管理员" + to + "发送邮件");
         }
         /*邮件通知QA Leader*/
         List<Employee> qaLeaders = employeeService.queryBasicEmployeeGroup(EmployeeTitle.QA_LEADER.getTitle());
         if(!ObjectUtils.isEmpty(qaLeaders)){
             String to = qaLeaders.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
+            LogUtil.i("即将发送邮件给" + to);
             sendApprovedEmailToGroup(to, projectBasicInfo.getProjectName(),
                     EmployeeTitle.QA_LEADER.getTitleName(), boss.getEmployeeName(),
                     "请登录AchieveIt系统为其分配QA。");
+            LogUtil.i("已经向组QA经理" + to + "发送邮件");
         }
         /*邮件通知EPG Leader*/
         List<Employee> epgLeaders = employeeService.queryBasicEmployeeGroup(EmployeeTitle.EPG_LEADER.getTitle());
         if(!ObjectUtils.isEmpty(epgLeaders)){
             String to = epgLeaders.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
+            LogUtil.i("即将发送邮件给" + to);
             sendApprovedEmailToGroup(to, projectBasicInfo.getProjectName(),
                     EmployeeTitle.EPG_LEADER.getTitleName(), boss.getEmployeeName(),
                     "请登录AchieveIt系统为其分配EPG。");
+            LogUtil.i("已经向EPG Leader" + to + "发送邮件");
         }
+        LogUtil.i("即将发送邮件给" + manager.getEmail());
 
         sendApprovedEmailToGroup(manager.getEmail(),projectBasicInfo.getProjectName(),
                 manager.getEmployeeName(),boss.getEmployeeName(),
                 "请登录AchieveIt系统查看详情。");
+        LogUtil.i("已经向项目经理" + manager.getEmployeeName() + "发送邮件");
 
         return true;
     }
@@ -203,6 +212,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
             String emailContent = templateEngine.process("disapprove_project_notify", context);
 
             mailService.sendHtmlMail(manager.getEmail(), "项目被驳回", emailContent);
+            LogUtil.i("已经向项目经理" + manager.getEmployeeName() + "发送邮件");
 
         }catch (Exception ex){
             ex.printStackTrace();

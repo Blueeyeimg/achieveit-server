@@ -75,10 +75,12 @@ public class IMailServiceImpl implements IMailService {
     public void sendHtmlMail(String to, String subject, String content) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
+        String[] tos = to.split(",");
+
         // true 表示需要创建一个multipart message
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(from);
-        helper.setTo(to);
+        helper.setTo(tos);
         helper.setSubject(subject);
         helper.setText(content, true);
 
@@ -89,10 +91,12 @@ public class IMailServiceImpl implements IMailService {
     public void sendHtmlMail(String to, String subject, String content, String... cc) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
+        String[] tos = to.split(",");
+
         // true 表示需要创建一个multipart message
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(from);
-        helper.setTo(to);
+        helper.setTo(tos);
         helper.setCc(cc);
         helper.setSubject(subject);
         helper.setText(content, true);

@@ -21,7 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public boolean updateProject(ProjectBasicInfo projectBasicInfo) {
-        Integer result = projectBasicInfoMapper.updateByPrimaryKey(projectBasicInfo);
+        Integer result = projectBasicInfoMapper.updateByPrimaryKeySelective(projectBasicInfo);
 
         return !result.equals(0);
     }
