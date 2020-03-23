@@ -60,7 +60,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
     }
 
     @Override
-    public String createPrject(String userId, ProjectBasicInfo projectBasicInfo, String instanceId) {
+    public String createProject(String userId, ProjectBasicInfo projectBasicInfo, String instanceId) {
         Task task = taskService.createTaskQuery().processInstanceId(instanceId).singleResult();
         task.setAssignee(userId);
         LogUtil.i("task assigned to " + userId);
@@ -161,9 +161,9 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         Employee boss = employeeService.queryBasicEmployeeById(projectBasicInfo.getProjectBossId());
 
         /*邮件通知配置管理员*/
-        List<Employee> orgCongigs = employeeService.queryBasicEmployeeGroup(EmployeeTitle.ORG_CONFIG.getTitle());
-        if(!ObjectUtils.isEmpty(orgCongigs)){
-            String to = orgCongigs.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
+        List<Employee> orgConfigs = employeeService.queryBasicEmployeeGroup(EmployeeTitle.ORG_CONFIG.getTitle());
+        if(!ObjectUtils.isEmpty(orgConfigs)){
+            String to = orgConfigs.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
             LogUtil.i("即将发送邮件给" + to);
             sendApprovedEmailToGroup(to, projectBasicInfo.getProjectName(),
                     EmployeeTitle.ORG_CONFIG.getTitleName(), boss.getEmployeeName(),
@@ -221,6 +221,90 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         }
         return true;
     }
+
+    @Override
+    public boolean setProjectConfig(String taskId, String userId, ProjectBasicInfo projectBasicInfo) {
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if(task == null){
+            return false;
+        }
+        task.setAssignee(userId);
+
+        String managerId = (String)taskService.getVariables(taskId).get("managerId");
+        projectService.updateProject(projectBasicInfo);
+        taskService.complete(taskId);
+
+        sendConfigEmail(managerId,projectBasicInfo.getProjectName(),userId);
+        return true;
+    }
+
+    @Override
+    public boolean setProjectQaOrEpg(String taskId, String userId, String role, String... ids) {
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if(task == null){
+            return false;
+        }
+        task.setAssignee(userId);
+
+        Map<String, Object> preVariables = taskService.getVariables(taskId);
+        ProjectBasicInfo projectBasicInfo = (ProjectBasicInfo)preVariables.get("project");
+        String managerId = (String)preVariables.get("managerId");
+        boolean result = true;
+        for(String id : ids){
+            result = result && projectMemberService.addProjectMember(projectBasicInfo.getProjectId(), id, role);
+        }
+        if(result){
+            sendSetMemberEmail(managerId,projectBasicInfo.getProjectName(),userId,role);
+            taskService.complete(taskId);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean sendConfigEmail(String projectManagerId, String projectName, String configId) {
+        Employee manager = employeeService.queryBasicEmployeeById(projectManagerId);
+        Employee config = employeeService.queryBasicEmployeeById(configId);
+        try {
+            Context context = new Context();
+            context.setVariable("project_name", projectName);
+            context.setVariable("user", manager.getEmployeeName());
+            context.setVariable("org_config", config.getEmployeeName());
+            String emailContent = templateEngine.process("configed_notify", context);
+
+            mailService.sendHtmlMail(manager.getEmail(), "新项目配置库已建立", emailContent);
+            LogUtil.i("成功给项目经理" + manager.getEmployeeName() + manager.getEmail() + "发送邮件");
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+            LogUtil.i("发送邮件失败");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean sendSetMemberEmail(String projectManagerId, String projectName, String leaderId, String employeeTitle) {
+        Employee manager = employeeService.queryBasicEmployeeById(projectManagerId);
+        Employee leader = employeeService.queryBasicEmployeeById(leaderId);
+        try {
+            Context context = new Context();
+            context.setVariable("project_name", projectName);
+            context.setVariable("user", manager.getEmployeeName());
+            context.setVariable("title", employeeTitle);
+            context.setVariable("leader_name", leader.getEmployeeName());
+            String emailContent = templateEngine.process("set_member_notify", context);
+
+            mailService.sendHtmlMail(manager.getEmail(), "新的" + employeeTitle + "已添加到项目", emailContent);
+            LogUtil.i("成功给项目经理" + manager.getEmployeeName() + manager.getEmail() + "发送邮件");
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+            LogUtil.i("发送邮件失败");
+            return false;
+        }
+        return true;
+    }
+
 
     public boolean sendApprovedEmailToGroup(String to, String projectName, String userGroup, String bossName, String message){
         try {

@@ -3,17 +3,21 @@ package com.ecnu.achieveit.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ecnu.achieveit.constant.ConstantUtil;
+import com.ecnu.achieveit.constant.ProjectRole;
 import com.ecnu.achieveit.constant.ProjectState;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
 import com.ecnu.achieveit.modelview.ProjectBasicInfoView;
 import com.ecnu.achieveit.service.EmployeeService;
 import com.ecnu.achieveit.service.NewProjectFlowService;
 import com.ecnu.achieveit.service.impl.IMailServiceImpl;
+import com.ecnu.achieveit.util.LogUtil;
 import com.ecnu.achieveit.util.RestResponse;
+import com.sun.org.apache.regexp.internal.RE;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,12 +26,6 @@ import java.util.List;
 
 @RestController
 public class NewProjectController {
-
-    @Autowired
-    private RuntimeService runtimeService;
-
-    @Autowired
-    private TaskService taskService;
 
     @Autowired
     private EmployeeService employeeService;
@@ -41,6 +39,14 @@ public class NewProjectController {
     @Qualifier("templateEngine")
     @Autowired
     private TemplateEngine templateEngine;
+
+    @PutMapping("test")
+    public Object test(@RequestParam("role")String[] role){
+        for(String s :role){
+            LogUtil.i(s);
+        }
+        return RestResponse.success(role.length);
+    }
 
     @GetMapping("/mail/{to}")
     public Object sendEmail(@PathVariable("to") String to){
@@ -70,15 +76,13 @@ public class NewProjectController {
         }
         projectBasicInfo.setState(ProjectState.APPLIED.getState());
         String instanceId = newProjectFlowService.startProcess();
-        newProjectFlowService.createPrject(userId,projectBasicInfo,instanceId);
+        newProjectFlowService.createProject(userId,projectBasicInfo,instanceId);
         return RestResponse.success(projectBasicInfo.getProjectId());
     }
 
     @GetMapping("/newproject")
     public Object getNewProjects(@RequestAttribute("userId") String userId){
-        if(!employeeService.checkTitle(userId,"项目上级")){
-                return RestResponse.fail("该用户不是项目上级!");
-        }
+
         List<ProjectBasicInfoView> projectBasicInfoViews =  newProjectFlowService.getAppliedProjects(userId);
 
         return RestResponse.success(projectBasicInfoViews);
@@ -96,6 +100,34 @@ public class NewProjectController {
             return RestResponse.success("审核项目成功，已发邮件给相关人员！");
         }
         return RestResponse.fail("无待审核的该项目");
+    }
+
+    @PutMapping("/newproject/config")
+    public Object config(@RequestParam("taskId") String taskId,
+                                @RequestAttribute("userId") String userId, ProjectBasicInfo projectBasicInfo){
+        if(ObjectUtils.isEmpty(projectBasicInfo.getGitAddress()) || ObjectUtils.isEmpty(projectBasicInfo.getFileSystemAddress())){
+            return RestResponse.fail("请提供配置库地址");
+        }
+
+        boolean result = newProjectFlowService.setProjectConfig(taskId, userId, projectBasicInfo);
+        if(!result){
+            return RestResponse.fail();
+        }
+        return RestResponse.success();
+    }
+
+    @PutMapping("/newproject/member")
+    public Object member(@RequestParam("taskId") String taskId, @RequestParam("role") String role ,
+                         @RequestParam("ids") String[] ids,
+                         @RequestAttribute("userId") String userId){
+        if(!ProjectRole.contains(role)){
+            return RestResponse.fail("不能为项目设置该类型的成员：" + role);
+        }
+        boolean result = newProjectFlowService.setProjectQaOrEpg(taskId,userId,role,ids);
+        if(!result){
+            return RestResponse.fail();
+        }
+        return RestResponse.success();
     }
 
     @GetMapping("/newproject/ids")

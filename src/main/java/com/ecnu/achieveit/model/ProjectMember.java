@@ -45,4 +45,15 @@ public class ProjectMember extends ProjectMemberKey implements Serializable {
         this.faultTrack = faultTrack;
     }
 
+    public ProjectMember(String projectId, String employeeId, String bossInProjectId, String role, Integer inTimesheetModule, boolean level){
+        super(projectId, employeeId);
+        this.bossInProjectId = bossInProjectId;
+        this.role = role;
+        this.inTimesheetModule = inTimesheetModule;
+        this.accessGit = level ? "W" : "R";
+        this.accessFileSystem = level ? "W" : "R";
+        this.inEmailList = level ? 1 : 0;
+        this.faultTrack = level ? 1 : 0;
+    }
+
 }

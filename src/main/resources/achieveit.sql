@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50720
 File Encoding         : 65001
 
-Date: 2020-03-21 01:43:27
+Date: 2020-03-22 21:36:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -87,9 +87,10 @@ CREATE TABLE `act_ge_property` (
 -- Records of act_ge_property
 -- ----------------------------
 INSERT INTO `act_ge_property` VALUES ('cfg.execution-related-entities-count', 'false', '1');
-INSERT INTO `act_ge_property` VALUES ('next.dbid', '37501', '16');
+INSERT INTO `act_ge_property` VALUES ('next.dbid', '67501', '28');
 INSERT INTO `act_ge_property` VALUES ('schema.history', 'create(6.0.0.4)', '1');
 INSERT INTO `act_ge_property` VALUES ('schema.version', '6.0.0.4', '1');
+
 
 -- ----------------------------
 -- Table structure for `act_hi_actinst`
@@ -117,7 +118,6 @@ CREATE TABLE `act_hi_actinst` (
   KEY `ACT_IDX_HI_ACT_INST_PROCINST` (`PROC_INST_ID_`,`ACT_ID_`),
   KEY `ACT_IDX_HI_ACT_INST_EXEC` (`EXECUTION_ID_`,`ACT_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 
 -- ----------------------------
 -- Table structure for `act_hi_attachment`
@@ -191,6 +191,7 @@ CREATE TABLE `act_hi_detail` (
   KEY `ACT_IDX_HI_DETAIL_TASK_ID` (`TASK_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+
 -- ----------------------------
 -- Table structure for `act_hi_identitylink`
 -- ----------------------------
@@ -207,6 +208,7 @@ CREATE TABLE `act_hi_identitylink` (
   KEY `ACT_IDX_HI_IDENT_LNK_TASK` (`TASK_ID_`),
   KEY `ACT_IDX_HI_IDENT_LNK_PROCINST` (`PROC_INST_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 
 -- ----------------------------
 -- Table structure for `act_hi_procinst`
@@ -263,7 +265,6 @@ CREATE TABLE `act_hi_taskinst` (
   KEY `ACT_IDX_HI_TASK_INST_PROCINST` (`PROC_INST_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
 -- ----------------------------
 -- Table structure for `act_hi_varinst`
 -- ----------------------------
@@ -288,7 +289,6 @@ CREATE TABLE `act_hi_varinst` (
   KEY `ACT_IDX_HI_PROCVAR_NAME_TYPE` (`NAME_`,`VAR_TYPE_`),
   KEY `ACT_IDX_HI_PROCVAR_TASK_ID` (`TASK_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 
 -- ----------------------------
 -- Table structure for `act_id_info`
@@ -345,7 +345,6 @@ CREATE TABLE `act_re_deployment` (
   `ENGINE_VERSION_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 
 -- ----------------------------
 -- Table structure for `act_re_model`
@@ -510,7 +509,6 @@ CREATE TABLE `act_ru_execution` (
   CONSTRAINT `ACT_FK_EXE_SUPER` FOREIGN KEY (`SUPER_EXEC_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
 -- ----------------------------
 -- Table structure for `act_ru_identitylink`
 -- ----------------------------
@@ -534,7 +532,6 @@ CREATE TABLE `act_ru_identitylink` (
   CONSTRAINT `ACT_FK_IDL_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`),
   CONSTRAINT `ACT_FK_TSKASS_TASK` FOREIGN KEY (`TASK_ID_`) REFERENCES `act_ru_task` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 
 -- ----------------------------
 -- Table structure for `act_ru_job`
@@ -727,6 +724,7 @@ CREATE TABLE `client` (
 -- Records of client
 -- ----------------------------
 INSERT INTO `client` VALUES ('pwc-001', 'Lucy', 'PriceWaterHouse', '2', '1730889216@qq.com', '13657024451', '上海市浦东新区长泰广场');
+INSERT INTO `client` VALUES ('tencent-002', 'Jacky', 'Tencent', '1', '10165101281@stu.ecnu.edu.cn', '15425642515', '深圳市');
 
 -- ----------------------------
 -- Table structure for `employee`
@@ -746,9 +744,15 @@ CREATE TABLE `employee` (
 -- ----------------------------
 -- Records of employee
 -- ----------------------------
+INSERT INTO `employee` VALUES ('hhd006', 'Huwuadong', '123456', '10165101284@stu.ecnu.edu.cn', 'TEST', '18545245565', '组织级配置管理员');
+INSERT INTO `employee` VALUES ('hhd007', '吴华栋', '123456', '1737725657@qq.com', 'TEST', '15625421542', '组织级配置管理员');
+INSERT INTO `employee` VALUES ('lxq001', 'YiXi', '123456', '2746902401@qq.com', 'DAET', '15215651546', 'EPG Leader');
+INSERT INTO `employee` VALUES ('lxq005', '晓倩', '123456', '10165101257@stu.ecnu.edu.cn', 'AI', '15945856456', 'EPG Leader');
+INSERT INTO `employee` VALUES ('rjh007', '团子', '123456', '10165101281@stu.ecnu.edu.cn', 'AI', '14458658458', 'QA经理');
+INSERT INTO `employee` VALUES ('rjh021', '人家会', '123456', '893941411@qq.com', 'TEST', '15245558565', 'QA经理');
 INSERT INTO `employee` VALUES ('sni025', 'robert', '123456', '1730889216@qq.com', 'DAET', '13658205654', '项目上级');
-INSERT INTO `employee` VALUES ('wy001', 'ocean', 'abcd333', '10165101284@stu.ecnu.edu.cn', 'TEST', '15970124536', '项目经理');
-INSERT INTO `employee` VALUES ('wy002', 'mountain', 'ddd55ss', '10165101281@stu.ecnu.edu.ccn', 'DAET', '13545848485', '项目上级');
+INSERT INTO `employee` VALUES ('wy001', 'ocean', 'abcd333', '542581960@qq.com', 'TEST', '15970124536', '项目经理');
+INSERT INTO `employee` VALUES ('wy002', 'mountain', 'ddd55ss', '760296775@qq.com', 'DAET', '13545848485', '项目上级');
 
 -- ----------------------------
 -- Table structure for `employee_title`
@@ -768,7 +772,13 @@ CREATE TABLE `employee_title` (
 -- ----------------------------
 INSERT INTO `employee_title` VALUES ('sni025', 'boss');
 INSERT INTO `employee_title` VALUES ('wy002', 'boss');
+INSERT INTO `employee_title` VALUES ('lxq001', 'epg_leader');
+INSERT INTO `employee_title` VALUES ('lxq005', 'epg_leader');
 INSERT INTO `employee_title` VALUES ('wy001', 'manager');
+INSERT INTO `employee_title` VALUES ('hhd006', 'org_config');
+INSERT INTO `employee_title` VALUES ('hhd007', 'org_config');
+INSERT INTO `employee_title` VALUES ('rjh007', 'qa_leader');
+INSERT INTO `employee_title` VALUES ('rjh021', 'qa_leader');
 
 -- ----------------------------
 -- Table structure for `project_basic_info`
@@ -781,7 +791,7 @@ CREATE TABLE `project_basic_info` (
   `state` varchar(255) NOT NULL DEFAULT 'appied',
   `exp_start_date` date NOT NULL,
   `exp_end_date` date NOT NULL,
-  `project_boss_id` varchar(255) NOT NULL,
+  `project_boss_id` varchar(255) NOT NULL DEFAULT 'sni025',
   `milestone` varchar(255) NOT NULL DEFAULT '',
   `technology` varchar(255) NOT NULL DEFAULT '',
   `business_domain` varchar(255) NOT NULL DEFAULT '',
@@ -795,10 +805,6 @@ CREATE TABLE `project_basic_info` (
   CONSTRAINT `project_fk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `project_fk_2` FOREIGN KEY (`project_boss_id`) REFERENCES `employee` (`employee_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of project_basic_info
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `project_device`
@@ -863,10 +869,6 @@ CREATE TABLE `project_member` (
   CONSTRAINT `project_member_fk_2` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `project_member_fk_3` FOREIGN KEY (`boss_in_project_id`) REFERENCES `employee` (`employee_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of project_member
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for `project_risk`
@@ -990,9 +992,10 @@ CREATE TABLE `title` (
 -- ----------------------------
 INSERT INTO `title` VALUES ('boss', '项目上级', 'assignment');
 INSERT INTO `title` VALUES ('developer', '开发', 'assignment');
+INSERT INTO `title` VALUES ('epg', 'EPG', 'assignment');
 INSERT INTO `title` VALUES ('epg_leader', 'EPG Leader', 'assignment');
 INSERT INTO `title` VALUES ('manager', '项目经理', 'assignment');
-INSERT INTO `title` VALUES ('org_configer', '组织级配置管理员', 'assignment');
+INSERT INTO `title` VALUES ('org_config', '组织级配置管理员', 'assignment');
 INSERT INTO `title` VALUES ('qa', 'QA', 'assignment');
 INSERT INTO `title` VALUES ('qa_leader', 'QA经理', 'assignment');
 INSERT INTO `title` VALUES ('test', '测试', 'assignment');

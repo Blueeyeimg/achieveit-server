@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>为项目配置成员</title>
+    <style>
+        body {
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #welcome {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="welcome">
+    <p>
+        亲爱的项目经理
+        <span th:text="${user}"></span>
+        :
+    </p>
+    <p>
+        您的项目
+        <span th:text="${project_name}"></span>
+        已由
+        <!--/*@thymesVar id="title" type="java.lang.String"*/-->
+        <span th:text="${title}"></span>
+        Leader
+        <!--/*@thymesVar id="leader_name" type="java.lang.String"*/-->
+        <span th:text="${leader_name}"></span>
+        添加新的<span th:text="${title}"></span>。请前往AchieveIt系统查看详细信息。
+    </p>
+</div>
+</body>
+</html>

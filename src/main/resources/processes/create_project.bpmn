@@ -13,7 +13,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${pass < 1}]]></conditionExpression>
     </sequenceFlow>
     <parallelGateway gatewayDirection="Unspecified" id="_11" name="ParallelGateway"/>
-    <userTask activiti:candidateGroups="org_configer" activiti:exclusive="true" id="_15" name="配置git、文件系统等"/>
+    <userTask activiti:candidateGroups="org_config" activiti:exclusive="true" id="_15" name="配置git、文件系统等"/>
     <sequenceFlow id="_16" sourceRef="_11" targetRef="_15"/>
     <userTask activiti:candidateGroups="qa_leader" activiti:exclusive="true" id="_17" name="分配QA"/>
     <sequenceFlow id="_18" sourceRef="_11" targetRef="_17"/>
@@ -80,7 +80,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_19" id="Shape-_19">
-        <omgdc:Bounds height="55.0" width="85.0" x="435.0" y="655.0"/>
+        <omgdc:Bounds height="55.0" width="85.0" x="435.0" y="645.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
@@ -120,7 +120,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_20" id="BPMNEdge__20" sourceElement="_11" targetElement="_19">
         <omgdi:waypoint x="337.0" y="546.0"/>
-        <omgdi:waypoint x="435.0" y="682.5"/>
+        <omgdi:waypoint x="435.0" y="672.5"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
         </bpmndi:BPMNLabel>
@@ -133,7 +133,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_28" id="BPMNEdge__28" sourceElement="_19" targetElement="_27">
-        <omgdi:waypoint x="435.0" y="682.5"/>
+        <omgdi:waypoint x="435.0" y="672.5"/>
         <omgdi:waypoint x="332.0" y="751.0"/>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>

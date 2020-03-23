@@ -2,9 +2,9 @@
 spring:
 
   mail:
-    host: smtp.qq.com #smtp.163.com
-    username: 1730889216@qq.com  #163邮箱 achieveitgroup09@163.com
-    password: pglgrrtnvwrccccd #163邮箱授权码 FMBCFQAIECMXDTIE
+    host: smtp.163.com
+    username: achieveitgroup09@163.com
+    password: FMBCFQAIECMXDTIE #pglgrrtnvwrccccd #qq邮箱授权码
     protocol: smtp
     properties.mail.smtp.auth: true
     properties.mail.smtp.port: 465
@@ -14,7 +14,7 @@ spring:
     properties.mail.smtp.starttls.required: true
     properties.mail.smtp.ssl.enable: true
     default-encoding: utf-8
-    from: 1730889216@qq.com
+    from: achieveitgroup09@163.com
 
   # activiti default configuration
   activiti:
@@ -25,6 +25,8 @@ spring:
     #  - **.bpmn
     #  - **.bpmn20.xml
     history-level: full
+    db-identity-used: false
+
 
 
   http:

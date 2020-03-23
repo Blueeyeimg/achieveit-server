@@ -6,4 +6,6 @@ public interface ProjectMemberService {
 
     boolean addProjectMember(ProjectMember projectMember);
 
+    boolean addProjectMember(String projectId, String userId, String role);
+
 }
