@@ -29,7 +29,7 @@ public class EmployeeController {
 
         Employee result = employeeService.queryEmployeeById(id);
         if(result == null){
-            return RestResponse.fail();
+            return RestResponse.fail("");
         }
         return RestResponse.success(result);
     }
