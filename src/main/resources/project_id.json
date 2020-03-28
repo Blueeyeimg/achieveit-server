@@ -1,1 +1,61 @@
-
+{
+  "code": 0,
+  "msg": "成功",
+  "data": [
+    {
+      "projectId": "2020-adgd-D-04",
+      "employeeId": "lxq100",
+      "bossInProjectId": "lxq100",
+      "role": "EPG",
+      "accessGit": "R",
+      "accessFileSystem": "R",
+      "inEmailList": 0,
+      "inTimesheetModule": 0,
+      "faultTrack": 0
+    },
+    {
+      "projectId": "2020-adgd-D-04",
+      "employeeId": "lxq102",
+      "bossInProjectId": "lxq102",
+      "role": "EPG",
+      "accessGit": "R",
+      "accessFileSystem": "R",
+      "inEmailList": 0,
+      "inTimesheetModule": 0,
+      "faultTrack": 0
+    },
+    {
+      "projectId": "2020-adgd-D-04",
+      "employeeId": "rjh100",
+      "bossInProjectId": "rjh100",
+      "role": "QA",
+      "accessGit": "R",
+      "accessFileSystem": "R",
+      "inEmailList": 0,
+      "inTimesheetModule": 1,
+      "faultTrack": 0
+    },
+    {
+      "projectId": "2020-adgd-D-04",
+      "employeeId": "rjh102",
+      "bossInProjectId": "rjh102",
+      "role": "QA",
+      "accessGit": "R",
+      "accessFileSystem": "R",
+      "inEmailList": 0,
+      "inTimesheetModule": 1,
+      "faultTrack": 0
+    },
+    {
+      "projectId": "2020-adgd-D-04",
+      "employeeId": "wy001",
+      "bossInProjectId": "wy001",
+      "role": "项目经理",
+      "accessGit": "W",
+      "accessFileSystem": "W",
+      "inEmailList": 1,
+      "inTimesheetModule": 1,
+      "faultTrack": 1
+    }
+  ]
+}
