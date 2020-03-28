@@ -7,9 +7,11 @@ import com.ecnu.achieveit.constant.EmployeeTitle;
 import com.ecnu.achieveit.constant.ProjectRole;
 import com.ecnu.achieveit.constant.ProjectState;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
+import com.ecnu.achieveit.model.ProjectId;
 import com.ecnu.achieveit.modelview.ProjectBasicInfoView;
 import com.ecnu.achieveit.service.EmployeeService;
 import com.ecnu.achieveit.service.NewProjectFlowService;
+import com.ecnu.achieveit.service.ProjectIdService;
 import com.ecnu.achieveit.service.impl.IMailServiceImpl;
 import com.ecnu.achieveit.util.LogUtil;
 import com.ecnu.achieveit.util.RestResponse;
@@ -23,7 +25,10 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class NewProjectController {
@@ -36,6 +41,9 @@ public class NewProjectController {
 
     @Autowired
     private IMailServiceImpl mailService;
+
+    @Autowired
+    private ProjectIdService projectIdService;
 
     @Qualifier("templateEngine")
     @Autowired
@@ -72,7 +80,7 @@ public class NewProjectController {
     @PostMapping("/newproject")
     public Object createNewProject(ProjectBasicInfo projectBasicInfo, @RequestAttribute("userId") String userId){
 
-        if(!employeeService.checkTitle(userId,"项目经理")){
+        if(!employeeService.checkTitle(userId,EmployeeTitle.MANAGER.getTitleName())){
             return RestResponse.fail("该用户不是项目经理!");
         }
         projectBasicInfo.setState(ProjectState.APPLIED.getState());
@@ -146,11 +154,16 @@ public class NewProjectController {
     }
 
     @GetMapping("/newproject/ids")
-    public Object getNewProjectIds(){
+    public Object getNewProjectIds(@RequestAttribute("userId") String userId){
 
-        JSONObject newProjectIds = new JSONObject();
-        newProjectIds.put("ids", ConstantUtil.newProjectIds);
-        return RestResponse.success(newProjectIds);
+        if(!employeeService.checkTitle(userId, EmployeeTitle.MANAGER.getTitleName())){
+            return RestResponse.fail("该用户不是项目经理!");
+        }
+        List<ProjectId> ids = projectIdService.querryProjectIds();
+        Map<String, Object> result = new HashMap<>();
+        result.put("ids", ids.stream().map(ProjectId::getProjectId).toArray(String[]::new));
+
+        return RestResponse.success(result);
     }
 
 

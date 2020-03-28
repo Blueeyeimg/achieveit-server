@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class NewProjectFlowServiceImpl implements NewProjectFlowService {
@@ -48,6 +49,9 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
     @Autowired
     private IMailService mailService;
 
+    @Autowired
+    private ProjectIdService projectIdService;
+
     @Qualifier("templateEngine")
     @Autowired
     private TemplateEngine templateEngine;
@@ -66,7 +70,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         boolean insertResult;
         projectBasicInfo.setState(ProjectState.APPLIED.getState());
         insertResult = projectService.addProject(projectBasicInfo);
-
+        projectIdService.deleteProjectId(projectBasicInfo.getProjectId());
         insertResult = insertResult && projectMemberService.addProjectMember(projectBasicInfo.getProjectId(),userId, userId, ProjectRole.MANAGER.getRole());
 
         if(!insertResult){
@@ -85,6 +89,9 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         taskService.complete(task.getId(),variables);
 
         LogUtil.i("录入信息任务完成");
+
+        sendApplieddEmailToBoss(projectBasicInfo.getProjectName(),userId);
+
         return true;
     }
 
@@ -172,7 +179,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         /*邮件通知配置管理员*/
         List<Employee> orgConfigs = employeeService.queryBasicEmployeeGroup(EmployeeTitle.ORG_CONFIG.getTitle());
         if(!ObjectUtils.isEmpty(orgConfigs)){
-            String to = orgConfigs.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
+            String to = orgConfigs.stream().map(Employee::getEmail).collect(Collectors.joining(","));
             LogUtil.i("即将发送邮件给" + to);
             sendApprovedEmailToGroup(to, projectBasicInfo.getProjectName(),
                     EmployeeTitle.ORG_CONFIG.getTitleName(), boss.getEmployeeName(),
@@ -182,7 +189,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         /*邮件通知QA Leader*/
         List<Employee> qaLeaders = employeeService.queryBasicEmployeeGroup(EmployeeTitle.QA_LEADER.getTitle());
         if(!ObjectUtils.isEmpty(qaLeaders)){
-            String to = qaLeaders.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
+            String to = qaLeaders.stream().map(Employee::getEmail).collect(Collectors.joining(","));
             LogUtil.i("即将发送邮件给" + to);
             sendApprovedEmailToGroup(to, projectBasicInfo.getProjectName(),
                     EmployeeTitle.QA_LEADER.getTitleName(), boss.getEmployeeName(),
@@ -192,7 +199,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         /*邮件通知EPG Leader*/
         List<Employee> epgLeaders = employeeService.queryBasicEmployeeGroup(EmployeeTitle.EPG_LEADER.getTitle());
         if(!ObjectUtils.isEmpty(epgLeaders)){
-            String to = epgLeaders.stream().map(Employee::getEmail).reduce((s1, s2) -> s1 + "," + s2).get();
+            String to = epgLeaders.stream().map(Employee::getEmail).collect(Collectors.joining(","));
             LogUtil.i("即将发送邮件给" + to);
             sendApprovedEmailToGroup(to, projectBasicInfo.getProjectName(),
                     EmployeeTitle.EPG_LEADER.getTitleName(), boss.getEmployeeName(),
@@ -331,6 +338,34 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
             LogUtil.i("发送邮件失败");
             return false;
         }
+        return true;
+    }
+
+    public boolean sendApplieddEmailToBoss(String projectName, String userId){
+
+        Employee manager = employeeService.queryBasicEmployeeById(userId);
+        List<Employee> bosses = employeeService.queryBasicEmployeeGroup(EmployeeTitle.BOSS.getTitle());
+
+        if(!ObjectUtils.isEmpty(bosses)){
+            String to = bosses.stream().map(Employee::getEmail).collect(Collectors.joining(","));
+            LogUtil.i("即将发送邮件给" + to);
+            try {
+                Context context = new Context();
+                context.setVariable("manager", manager.getEmployeeName());
+                context.setVariable("project_name", projectName);
+                String emailContent = templateEngine.process("new_project_applied_notify", context);
+
+                mailService.sendHtmlMail(to, "有新项目提交", emailContent);
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                LogUtil.i("发送邮件失败");
+                return false;
+            }
+            LogUtil.i("已经向Boss " + to + "发送邮件");
+        }
+
+
         return true;
     }
 

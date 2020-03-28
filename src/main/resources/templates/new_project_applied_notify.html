@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新项目提交</title>
+    <style>
+        body {
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #welcome {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="welcome">
+    <p>
+        亲爱的项目上级:
+    </p>
+    <p>
+        项目经理
+        <!--/*@thymesVar id="manager" type="java.lang.String"*/-->
+        <span th:text="${manager}"></span>
+        提交了新的项目：《
+        <span th:text="${project_name}"></span>
+        》。请及时登录AchieveIt系统进行审批。
+    </p>
+</div>
+</body>
+</html>
