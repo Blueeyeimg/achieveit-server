@@ -1,9 +1,12 @@
 package com.ecnu.achieveit.controller;
 
 import com.ecnu.achieveit.model.ProjectBasicInfo;
+import com.ecnu.achieveit.model.ProjectId;
 import com.ecnu.achieveit.service.EmployeeService;
+import com.ecnu.achieveit.service.ProjectIdService;
 import com.ecnu.achieveit.service.ProjectService;
 import com.ecnu.achieveit.util.RestResponse;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,38 +19,14 @@ public class ProjectBasicInfoController {
     private ProjectService projectService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ProjectIdService projectIdService;
 
     @GetMapping("/project_info/{project_id}")
     public Object show(@PathVariable("project_id")String projectId){
         ProjectBasicInfo result = projectService.querryProjectByPrimaryKey(projectId);
         if(result == null) return RestResponse.fail();
         return RestResponse.success(result);
-    }
-
-    @GetMapping("/project_infos/{item}/{item_value}")
-    public Object list1(@PathVariable("item") String item,
-                        @PathVariable("item_value")String itemValue){
-        if(item.equals("employee_id")){
-            List<ProjectBasicInfo> result = projectService.querryProjectByEmployeeId(itemValue);
-            if(result.size() == 0) return RestResponse.fail("null");
-            else return RestResponse.success(result);
-        }
-        else if(item.equals("client_id")){
-            List<ProjectBasicInfo> result = projectService.querryProjectByClientId(itemValue);
-            if(result.size() == 0) return RestResponse.fail("null");
-            else return RestResponse.success(result);
-        }
-        else if(item.equals("state")) {
-            List<ProjectBasicInfo> result = projectService.querryProjectByState(itemValue);
-            if(result.size() == 0) return RestResponse.fail("null");
-            else return RestResponse.success(result);
-        }
-        else if(item.equals("boss_id")){
-            List<ProjectBasicInfo> result = projectService.querryProjectByBossId(itemValue);
-            if(result.size() == 0) return RestResponse.fail("null");
-            else return RestResponse.success(result);
-        }
-        return RestResponse.fail();
     }
 
     /**
@@ -68,9 +47,25 @@ public class ProjectBasicInfoController {
                         @RequestAttribute("userId")String employeeId){
         List<ProjectBasicInfo> result = projectService.querryProjectByKeyWord(keyWord,employeeId);
 
-        if(result.size() == 0) return RestResponse.fail("null");
+        if(result== null) return RestResponse.fail();
         return RestResponse.success(result);
     }
 
+    /*@GetMapping("project_id")
+    public Object list4(){
+        //这里要先检查title
+        List<ProjectId> result = projectIdService.querryProjectIds();
+        if(result == null) return RestResponse.fail();
+        return RestResponse.success(result);
+    }
+
+    @DeleteMapping("project_id/{id}")
+    public Object delete1(@PathVariable("id") String projectId){
+        Boolean result = projectIdService.deleteProjectId(projectId);
+        if(!result){
+            return RestResponse.fail();
+        }
+        return RestResponse.success();
+    }*/
 
 }

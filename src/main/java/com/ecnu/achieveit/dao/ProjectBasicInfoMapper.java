@@ -1,6 +1,7 @@
 package com.ecnu.achieveit.dao;
 
 import com.ecnu.achieveit.model.ProjectBasicInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -86,5 +87,6 @@ public interface ProjectBasicInfoMapper {
      * @param keyWord
      * @return List<ProjectBasicInfo>
      */
-     List<ProjectBasicInfo> selectByKeyWord(String keyWord, String employeeId);
+     List<ProjectBasicInfo> selectByKeyWord(@Param("keyWord") String keyWord,
+                                            @Param("employeeId") String employeeId);
 }

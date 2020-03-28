@@ -64,7 +64,7 @@
     from project_basic_info
     where project_boss_id = #{bossId,jdbcType=VARCHAR}
   </select>
-  <select id="selectByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByKeyWord"  resultMap="BaseResultMap">
     SELECT
     <include refid="Base_Column_List"/>
     FROM project_basic_info
@@ -74,8 +74,8 @@
     OR project_name LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
     OR client_id LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
     OR state LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
-    OR exp_start_date LIKE CONCAT('%',#{keyWord,jdbcType=DATE},'%')
-    OR exp_end_date LIKE CONCAT('%',#{keyWord,jdbcType=DATE},'%')
+    OR exp_start_date LIKE BINARY CONCAT('%',#{keyWord,jdbcType=DATE},'%')
+    OR exp_end_date LIKE BINARY CONCAT('%',#{keyWord,jdbcType=DATE},'%')
     OR project_boss_id LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
     OR milestone LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
     OR technology LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')

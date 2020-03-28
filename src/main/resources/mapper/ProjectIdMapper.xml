@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecnu.achieveit.dao.ProjectIdMapper">
+  <resultMap id="BaseResultMap" type="com.ecnu.achieveit.model.ProjectId">
+    <id column="project_id" jdbcType="VARCHAR" property="projectId" />
+  </resultMap>
+  <sql id="BaseColumnList">
+    project_id
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from project_id_repository
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="project_id" keyProperty="projectId" parameterType="com.ecnu.achieveit.model.ProjectId" useGeneratedKeys="true">
+    insert into project_id_repository ()
+    values ()
+  </insert>
+  <insert id="insertSelective" keyColumn="project_id" keyProperty="projectId" parameterType="com.ecnu.achieveit.model.ProjectId" useGeneratedKeys="true">
+    insert into project_id_repository
+    <trim prefix="(" suffix=")" suffixOverrides="," />
+    <trim prefix="values (" suffix=")" suffixOverrides="," />
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="BaseColumnList"/>
+    FROM project_id_repository
+  </select>
+  <update id="updateProjectId" >
+    UPDATE project_id_repository
+    SET project_id = #{newprojectId,jdbcType=VARCHAR}
+    WHERE project_id = #{oldProjectId,jdbcType=VARCHAR}
+  </update>
+</mapper>
