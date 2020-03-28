@@ -61,4 +61,11 @@ public class ProjectServiceImpl implements ProjectService {
 
         return  result;
     }
+
+    @Override
+    public List<ProjectBasicInfo> querryProjectByKeyWord(String keyWord,String employeeId){
+        List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByKeyWord(keyWord,employeeId);
+
+        return  result;
+    }
 }
