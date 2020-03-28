@@ -64,6 +64,29 @@
     from project_basic_info
     where project_boss_id = #{bossId,jdbcType=VARCHAR}
   </select>
+  <select id="selectByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM project_basic_info
+    WHERE project_id in (select project_id from project_member where employee_id = #{employeeId,jdbcType=VARCHAR})
+    AND(
+    project_id LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR project_name LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR client_id LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR state LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR exp_start_date LIKE CONCAT('%',#{keyWord,jdbcType=DATE},'%')
+    OR exp_end_date LIKE CONCAT('%',#{keyWord,jdbcType=DATE},'%')
+    OR project_boss_id LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR milestone LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR technology LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR business_domain LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR main_functions LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR output_link LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR git_address LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    OR file_system_address LIKE CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+    )
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - @mbg.generated

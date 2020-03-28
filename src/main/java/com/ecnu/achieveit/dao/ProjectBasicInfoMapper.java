@@ -80,4 +80,11 @@ public interface ProjectBasicInfoMapper {
      * @return List<ProjectBasicInfo>
      */
      List<ProjectBasicInfo> selectByBossId(String bossId);
+
+    /**
+     *
+     * @param keyWord
+     * @return List<ProjectBasicInfo>
+     */
+     List<ProjectBasicInfo> selectByKeyWord(String keyWord, String employeeId);
 }

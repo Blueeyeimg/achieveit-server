@@ -17,6 +17,8 @@ public interface ProjectService {
 
     List<ProjectBasicInfo> querryProjectByState(String state);
 
-    List<ProjectBasicInfo> querryProjectByBossId(String BossId);
+    List<ProjectBasicInfo> querryProjectByBossId(String bossId);
+
+    List<ProjectBasicInfo> querryProjectByKeyWord(String keyWord,String employeeId);
 
 }
