@@ -1,6 +1,7 @@
 package com.ecnu.achieveit.service.impl;
 
 import com.ecnu.achieveit.constant.EmployeeTitle;
+import com.ecnu.achieveit.constant.ProjectRole;
 import com.ecnu.achieveit.constant.ProjectState;
 import com.ecnu.achieveit.model.Employee;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
@@ -60,15 +61,23 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
     }
 
     @Override
-    public String createProject(String userId, ProjectBasicInfo projectBasicInfo, String instanceId) {
+    public boolean createProject(String userId, ProjectBasicInfo projectBasicInfo) {
+
+        boolean insertResult;
+        projectBasicInfo.setState(ProjectState.APPLIED.getState());
+        insertResult = projectService.addProject(projectBasicInfo);
+
+        insertResult = insertResult && projectMemberService.addProjectMember(projectBasicInfo.getProjectId(),userId, userId, ProjectRole.MANAGER.getRole());
+
+        if(!insertResult){
+            return false;
+        }
+
+        String instanceId = startProcess();
         Task task = taskService.createTaskQuery().processInstanceId(instanceId).singleResult();
         task.setAssignee(userId);
         LogUtil.i("task assigned to " + userId);
 
-        projectBasicInfo.setState(ProjectState.APPROVED.getState());
-        projectService.addProject(projectBasicInfo);
-        projectMemberService.addProjectMember(new ProjectMember(projectBasicInfo.getProjectId(),
-                userId,userId,"项目经理","W","W",1,1,1));
 
         Map<String, Object> variables= new HashMap<>();
         variables.put("managerId", userId);
@@ -76,7 +85,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         taskService.complete(task.getId(),variables);
 
         LogUtil.i("录入信息任务完成");
-        return projectBasicInfo.getProjectId();
+        return true;
     }
 
     @Override
@@ -251,7 +260,7 @@ public class NewProjectFlowServiceImpl implements NewProjectFlowService {
         String managerId = (String)preVariables.get("managerId");
         boolean result = true;
         for(String id : ids){
-            result = result && projectMemberService.addProjectMember(projectBasicInfo.getProjectId(), id, role);
+            result = result && projectMemberService.addProjectMember(projectBasicInfo.getProjectId(), id, managerId, role);
         }
         if(result){
             sendSetMemberEmail(managerId,projectBasicInfo.getProjectName(),userId,role);

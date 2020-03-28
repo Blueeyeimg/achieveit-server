@@ -11,7 +11,7 @@ public interface NewProjectFlowService {
 
     String startProcess();
 
-    String createProject(String userId, ProjectBasicInfo projectBasicInfo, String instanceId);
+    boolean createProject(String userId, ProjectBasicInfo projectBasicInfo);
 
     List<ProjectBasicInfoView> getAppliedProjects(String userId);
 

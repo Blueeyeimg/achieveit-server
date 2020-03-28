@@ -6,6 +6,7 @@ import com.ecnu.achieveit.service.ProjectService;
 import com.ecnu.achieveit.util.RestResponse;
 import com.sun.org.apache.xpath.internal.objects.XObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -74,5 +75,11 @@ public class ProjectBasicInfoController {
         if(result == null) return RestResponse.fail();
         return RestResponse.success(result);
     }*/
+
+    @GetMapping("/project_infos")
+    public Object list(@RequestAttribute("userId") String userId){
+
+        return RestResponse.success(projectService.querryProjectByEmployeeId(userId));
+    }
 }
 

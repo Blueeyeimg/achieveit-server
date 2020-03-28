@@ -2,6 +2,7 @@ package com.ecnu.achieveit.constant;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author 倪事通
@@ -24,8 +25,9 @@ public enum ProjectRole {
 
     EPG("EPG"),
 
-    QA("QA");
+    QA("QA"),
 
+    CONFIG("配置管理员");
 
     private String role;
 
@@ -41,9 +43,16 @@ public enum ProjectRole {
         this.role = role;
     }
 
-    public static boolean contains(String role){
-        long count = Arrays.stream(ProjectRole.values()).map(ProjectRole::getRole).filter(role::equals).count();
+    public static boolean valid(String role){
+        List<String> roles = Arrays.stream(role.split(",")).collect(Collectors.toList());
 
+        long count = Arrays.stream(ProjectRole.values()).map(ProjectRole::getRole).filter(roles::contains).count();
+        return count != roles.size();
+    }
+
+    public boolean in(String role){
+        long count = Arrays.stream(role.split(",")).filter(r -> this.role.equals(r)).count();
         return count != 0;
     }
+
 }

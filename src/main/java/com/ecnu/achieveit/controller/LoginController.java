@@ -2,6 +2,7 @@ package com.ecnu.achieveit.controller;
 
 import com.ecnu.achieveit.constant.RestCode;
 import com.ecnu.achieveit.model.Employee;
+import com.ecnu.achieveit.modelview.LoginView;
 import com.ecnu.achieveit.service.LoginService;
 import com.ecnu.achieveit.util.JwtConfig;
 import com.ecnu.achieveit.util.RestResponse;
@@ -24,7 +25,6 @@ public class LoginController {
     @PostMapping("/login")
     public Object login (@RequestParam("user") String user,
                                      @RequestParam("password") String password){
-        Map<String,String> result = new HashMap<>();
 
         Employee userObject = loginService.login(user, password);
         if(userObject == null){
@@ -35,10 +35,9 @@ public class LoginController {
         if (StringUtils.isEmpty(token)) {
             return RestResponse.fail("Due to unknow reason, can not create token for this user.");
         }
-        result.put("token",token);
-        result.put("userName",userObject.getEmployeeName());
 
-        return RestResponse.success(result);
+        userObject.setPassword("");
+        return RestResponse.success(new LoginView(token,userObject));
     }
 
 
