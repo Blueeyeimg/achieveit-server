@@ -2,6 +2,8 @@ package com.ecnu.achieveit.dao;
 
 import com.ecnu.achieveit.model.ProjectMember;
 import com.ecnu.achieveit.model.ProjectMemberKey;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -55,5 +57,7 @@ public interface ProjectMemberMapper {
     int updateByPrimaryKey(ProjectMember record);
 
 
-    List<ProjectMember> queryListByProjectId(String projectId);
+    List<ProjectMember> selectListByProjectId(String projectId);
+
+    List<ProjectMember> selectListByRole(@Param("projectId") String projectId, @Param("role") String role);
 }

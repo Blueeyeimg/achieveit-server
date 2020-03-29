@@ -10,6 +10,7 @@ import com.ecnu.achieveit.service.ProjectMemberService;
 import com.ecnu.achieveit.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -21,6 +22,14 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public boolean addProjectMember(ProjectMember projectMember) {
+
+        if(projectMember.getBossInProjectId() == null){
+            List<ProjectMember> managers = queryMemberByRole(projectMember.getProjectId(),ProjectRole.MANAGER.getRole());
+            if(ObjectUtils.isEmpty(managers)){
+                return false;
+            }
+        projectMember.setBossInProjectId(managers.get(0).getEmployeeId());
+    }
 
         if(updatePermissionToServer(projectMember)){
             return projectMemberMapper.insertSelective(projectMember) == 1;
@@ -54,7 +63,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public List<ProjectMember> queryMemberList(String projectId) {
-        return projectMemberMapper.queryListByProjectId(projectId);
+        return projectMemberMapper.selectListByProjectId(projectId);
     }
 
     @Override
@@ -67,16 +76,24 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return projectMemberMapper.deleteByPrimaryKey(projectMemberKey) == 1;
     }
 
+    @Override
+    public List<ProjectMember> queryMemberByRole(String projectId, String role) {
+        return projectMemberMapper.selectListByRole(projectId, role);
+    }
+
     private boolean updatePermissionToServer(ProjectMember projectMember){
         ProjectMember originalMember = projectMemberMapper.selectByPrimaryKey(projectMember);
         if(originalMember != null){
-            if(!projectMember.getAccessGit().equals(originalMember.getAccessGit())){
+            if(projectMember.getAccessGit() != null
+                && !projectMember.getAccessGit().equals(originalMember.getAccessGit())){
                 callGitShell(projectMember.getProjectId(),projectMember.getEmployeeId(),"W".equals(projectMember.getAccessGit()));
             }
-            if(!projectMember.getAccessFileSystem().equals(originalMember.getAccessFileSystem())){
+            if(projectMember.getAccessFileSystem() != null
+                && !projectMember.getAccessFileSystem().equals(originalMember.getAccessFileSystem())){
                 callFileSystemShell(projectMember.getProjectId(),projectMember.getEmployeeId(),"W".equals(projectMember.getAccessFileSystem()));
             }
-            if(!projectMember.getInEmailList().equals(originalMember.getInEmailList())){
+            if(projectMember.getInEmailList() != null
+                && !projectMember.getInEmailList().equals(originalMember.getInEmailList())){
                 callEmailShell(projectMember.getProjectId(),projectMember.getEmployeeId(),projectMember.getInEmailList().equals(1));
             }
         }
@@ -86,16 +103,19 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     private boolean callGitShell(String projectId, String userId, boolean permit){
         //获取git地址，根据permit调用相应的shell
+        LogUtil.i("Git权限变更，已在Git更新权限");
         return true;
     }
 
     private boolean callFileSystemShell(String projectId, String userId, boolean permit){
         //获取file system地址，根据permit调用相应的shell
+        LogUtil.i("文件系统权限变更，已在文件系统服务器更新权限");
         return true;
     }
 
     private boolean callEmailShell(String projectId, String userId, boolean permit){
         //获取项目邮件列表服务器地址，根据permit和user email调用相应的shell
+        LogUtil.i("邮件列表权限变更，已在邮件服务器更新权限");
         return true;
     }
 }

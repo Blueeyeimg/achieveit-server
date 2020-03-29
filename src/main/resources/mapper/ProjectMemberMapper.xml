@@ -171,11 +171,20 @@
     where project_id = #{projectId,jdbcType=VARCHAR}
       and employee_id = #{employeeId,jdbcType=VARCHAR}
   </update>
-  <select id="queryListByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectListByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from project_member
     where project_id = #{projectId,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectListByRole" resultMap="BaseResultMap">
+     select
+        <include refid="Base_Column_List" />
+     from project_member
+     where project_id = #{projectId,jdbcType=VARCHAR}
+     and role LIKE CONCAT('%',#{role,jdbcType=VARCHAR},'%')
+  </select>
+
 
 </mapper>

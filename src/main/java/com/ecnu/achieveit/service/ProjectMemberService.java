@@ -19,4 +19,5 @@ public interface ProjectMemberService {
 
     boolean deleteMemberByKey(ProjectMemberKey projectMemberKey);
 
+    List<ProjectMember> queryMemberByRole(String projectId, String role);
 }

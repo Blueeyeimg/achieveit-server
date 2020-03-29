@@ -50,24 +50,6 @@ public class NewProjectController {
     @Autowired
     private TemplateEngine templateEngine;
 
-    @PutMapping("test")
-    public Object test(@RequestParam("role")String[] role){
-        for(String s :role){
-            LogUtil.i(s);
-        }
-        return RestResponse.success(role.length);
-    }
-
-    @GetMapping("/test/{role}")
-    public Object sendEmail(@PathVariable("role") String role ){
-        LogUtil.i("验证角色" + role);
-        if(ProjectRole.valid(role)){
-            LogUtil.i("成功");
-            return RestResponse.success();
-        }
-        LogUtil.i("失败");
-        return RestResponse.fail();
-    }
 
     @PostMapping("/newproject")
     public Object createNewProject(ProjectBasicInfo projectBasicInfo, @RequestAttribute("userId") String userId){
