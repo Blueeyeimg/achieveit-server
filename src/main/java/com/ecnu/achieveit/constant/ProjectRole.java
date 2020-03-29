@@ -47,7 +47,7 @@ public enum ProjectRole {
         List<String> roles = Arrays.stream(role.split(",")).collect(Collectors.toList());
 
         long count = Arrays.stream(ProjectRole.values()).map(ProjectRole::getRole).filter(roles::contains).count();
-        return count != roles.size();
+        return count == roles.size();
     }
 
     public boolean in(String role){

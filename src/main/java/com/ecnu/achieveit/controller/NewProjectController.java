@@ -6,6 +6,7 @@ import com.ecnu.achieveit.constant.ConstantUtil;
 import com.ecnu.achieveit.constant.EmployeeTitle;
 import com.ecnu.achieveit.constant.ProjectRole;
 import com.ecnu.achieveit.constant.ProjectState;
+import com.ecnu.achieveit.model.Employee;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
 import com.ecnu.achieveit.model.ProjectId;
 import com.ecnu.achieveit.modelview.ProjectBasicInfoView;
@@ -57,24 +58,15 @@ public class NewProjectController {
         return RestResponse.success(role.length);
     }
 
-    @GetMapping("/mail/{to}")
-    public Object sendEmail(@PathVariable("to") String to){
-        try {
-            Context context = new Context();
-            context.setVariable("project_name", "《我与世界》");
-            context.setVariable("user", "ocean");
-            context.setVariable("boss", "robert");
-            context.setVariable("message", "");
-            String emailContent = templateEngine.process("approve_project_notify", context);
-
-            mailService.sendHtmlMail(to, "这是模板邮件的测试", emailContent);
-
-            /*mailService.sendSimpleMail("achieveitgroup09@163.com","测试邮件","这次不会乱码了吧！");*/
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return RestResponse.fail("邮件发送失败");
+    @GetMapping("/test/{role}")
+    public Object sendEmail(@PathVariable("role") String role ){
+        LogUtil.i("验证角色" + role);
+        if(ProjectRole.valid(role)){
+            LogUtil.i("成功");
+            return RestResponse.success();
         }
-        return RestResponse.success("邮件发送成功");
+        LogUtil.i("失败");
+        return RestResponse.fail();
     }
 
     @PostMapping("/newproject")
