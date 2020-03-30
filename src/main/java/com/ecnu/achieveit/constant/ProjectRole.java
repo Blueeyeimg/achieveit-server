@@ -1,5 +1,7 @@
 package com.ecnu.achieveit.constant;
 
+import com.ecnu.achieveit.model.ProjectMember;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +54,15 @@ public enum ProjectRole {
 
     public boolean in(String role){
         long count = Arrays.stream(role.split(",")).filter(r -> this.role.equals(r)).count();
+        return count != 0;
+    }
+
+    public static boolean isImportant(String role){
+        long count = Arrays.stream(role.split(",")).filter(r ->
+                r.equals(ProjectRole.MANAGER.getRole())
+                    || r.equals(ProjectRole.EPG.getRole())
+                    || r.equals(ProjectRole.QA.getRole())).count();
+
         return count != 0;
     }
 

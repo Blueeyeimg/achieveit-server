@@ -33,7 +33,7 @@ public class ProjectMemberController {
         if(ProjectRole.QA.in(role)
                 || ProjectRole.EPG.in(role)
                 || ProjectRole.MANAGER.in(role)){
-            return RestResponse.fail("不能新增QA、EPG或者项目经理");
+            return RestResponse.noPermission("不能新增QA、EPG或者项目经理");
         }
         LogUtil.i("成功");
         return RestResponse.success();
@@ -49,12 +49,12 @@ public class ProjectMemberController {
     public Object add(@RequestAttribute("userId") String userId, ProjectMember projectMember){
         ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectMember.getProjectId(),userId));
         if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
-            return RestResponse.fail("当前用户不是该项目的项目经理，无法导入项目成员");
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法导入项目成员");
         }
-        if(ProjectRole.QA.in(projectMember.getRole())
-                || ProjectRole.EPG.in(projectMember.getRole())
-                || ProjectRole.MANAGER.in(projectMember.getRole())){
-            return RestResponse.fail("不能新增QA、EPG或者项目经理");
+
+        if(ProjectRole.isImportant(projectMember.getRole())){
+
+            return RestResponse.noPermission("不能导入QA、EPG或者项目经理");
         }
 
         if(projectMemberService.addProjectMember(projectMember)){
@@ -67,36 +67,35 @@ public class ProjectMemberController {
     public Object update(@RequestAttribute("userId") String userId, ProjectMember projectMember){
         ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectMember.getProjectId(),userId));
         if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
-            return RestResponse.fail("当前用户不是该项目的项目经理，无法修改项目成员权限");
-        }
-        if(Objects.equals(userId, projectMember.getEmployeeId())
-                && !ProjectRole.MANAGER.in(user.getRole())){
-            return RestResponse.fail("不能将项目经理转为非项目经理");
-        }
-        if(ProjectRole.QA.in(projectMember.getRole())
-                || ProjectRole.EPG.in(projectMember.getRole())
-                || ProjectRole.MANAGER.in(projectMember.getRole())){
-            return RestResponse.fail("不能将普通成员转为QA、EPG或者项目经理");
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法修改项目成员权限");
         }
 
-        projectMemberService.modifyMemberPermission(projectMember);
+        ProjectMember oldMember = projectMemberService.queryMemberByKey(projectMember);
 
-        return RestResponse.success();
+        if(ProjectRole.isImportant(projectMember.getRole())
+                ^ ProjectRole.isImportant(oldMember.getRole())){
+
+            return  RestResponse.noPermission("不能将重要角色转化（项目经理、EPG、QA）为普通角色或者将普通角色转化为重要角色");
+        }
+
+        if(projectMemberService.modifyMemberPermission(projectMember)){
+            return RestResponse.success();
+        }
+
+        return RestResponse.fail();
     }
 
     @DeleteMapping("/member")
     public Object delete(@RequestAttribute("userId") String userId, ProjectMember projectMember){
         ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectMember.getProjectId(),userId));
         if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
-            return RestResponse.fail("当前用户不是该项目的项目经理，无法删除项目成员");
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法删除项目成员");
         }
 
-        ProjectMember member = projectMemberService.queryMemberByKey(
-                new ProjectMemberKey(projectMember.getProjectId(),projectMember.getEmployeeId()));
-        if(ProjectRole.QA.in(member.getRole())
-                || ProjectRole.EPG.in(member.getRole())
-                || ProjectRole.MANAGER.in(member.getRole())){
-            return RestResponse.fail("不能删除QA、EPG或者项目经理");
+        ProjectMember oldMember = projectMemberService.queryMemberByKey(projectMember);
+
+        if(ProjectRole.isImportant(oldMember.getRole())){
+            return RestResponse.noPermission("不能删除QA、EPG或者项目经理");
         }
 
         if(projectMemberService.deleteMemberByKey(projectMember)){

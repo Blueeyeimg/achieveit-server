@@ -27,6 +27,7 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> success(T data) {
         RestResponse restResponse = new RestResponse();
         restResponse.setData(data);
+        LogUtil.i(String.valueOf(data));
         return restResponse;
     }
 
@@ -37,6 +38,7 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> fail(T data) {
         RestResponse<T> restResponse = new RestResponse<>(RestCode.FAIL.getCode(), RestCode.FAIL.getMsg());
         restResponse.setData(data);
+        LogUtil.i(String.valueOf(data));
         return restResponse;
     }
 
@@ -47,6 +49,7 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> noPermission(T data) {
         RestResponse<T> restResponse = new RestResponse<>(RestCode.NO_PER.getCode(), RestCode.NO_PER.getMsg());
         restResponse.setData(data);
+        LogUtil.i(String.valueOf(data));
         return restResponse;
     }
 

@@ -28,8 +28,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
             if(ObjectUtils.isEmpty(managers)){
                 return false;
             }
-        projectMember.setBossInProjectId(managers.get(0).getEmployeeId());
-    }
+            projectMember.setBossInProjectId(managers.get(0).getEmployeeId());
+        }
 
         if(updatePermissionToServer(projectMember)){
             return projectMemberMapper.insertSelective(projectMember) == 1;
