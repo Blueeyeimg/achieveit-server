@@ -59,4 +59,7 @@
       </if>
     </trim>
   </insert>
+  <select id="selectListByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
+      SELECT * FROM project_function WHERE project_id = #{projectId,jdbcType=VARCHAR}
+  </select>
 </mapper>

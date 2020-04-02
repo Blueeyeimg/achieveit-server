@@ -1,6 +1,9 @@
 package com.ecnu.achieveit.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +28,8 @@ public class ProjectDevice extends ProjectDeviceKey implements Serializable {
 
     private String deviceManagerId;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date checkinDate;
 
     /**
@@ -33,12 +38,16 @@ public class ProjectDevice extends ProjectDeviceKey implements Serializable {
      */
     private Integer totalUseTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date lastVerifyDate;
 
     /**
      * Database Column Remarks:
      *   当state为1时使用该变量
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date returnDate;
 
     private static final long serialVersionUID = 1L;
@@ -52,6 +61,14 @@ public class ProjectDevice extends ProjectDeviceKey implements Serializable {
         this.totalUseTime = totalUseTime;
         this.lastVerifyDate = lastVerifyDate;
         this.returnDate = returnDate;
+    }
+
+    public boolean valid(){
+        return getProjectId() != null
+                && getDeviceId() != null
+                && type != null
+                && deviceManagerId != null
+                && totalUseTime != null;
     }
 
 }
