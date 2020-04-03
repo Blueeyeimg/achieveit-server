@@ -18,16 +18,16 @@ public interface ProjectService {
 
     ProjectBasicInfo querryProjectByPrimaryKey(String projectId);
 
-    List<ProjectBasicInfo> querryProjectByEmployeeId(String employeeId);
+    List<ProjectBasicInfo> queryProjectByEmployeeId(String employeeId);
 
-    List<ProjectBasicInfo> querryProjectByClientId(String clientId);
+    List<ProjectBasicInfo> queryProjectByClientId(String clientId);
 
-    List<ProjectBasicInfo> querryProjectByState(String state);
+    List<ProjectBasicInfo> queryProjectByState(String state);
 
-    List<ProjectBasicInfo> querryProjectByBossId(String bossId);
+    List<ProjectBasicInfo> queryProjectByBossId(String bossId);
 
-    List<ProjectBasicInfo> querryProjectByKeyWord(String keyWord,String employeeId);
+    List<ProjectBasicInfo> queryProjectByKeyWord(String keyWord,String employeeId);
 
-    List<AssetItem> querryAssetItem();
+    List<AssetItem> queryAssetItem();
 
 }

@@ -8,27 +8,31 @@ import java.sql.Time;
 import java.util.List;
 
 public interface TimesheetService {
-    List<String> querryProjectIdByEmployeeId(String employeeId);
+    List<String> queryProjectIdByEmployeeId(String employeeId);
 
-    List<String> querryPrimaryFunction(String projectId);
+    List<String> queryPrimaryFunction(String projectId);
 
-    List<String> querrySecondaryFunction(String projectId,String primaryFunction);
+    List<String> querySecondaryFunction(String projectId,String primaryFunction);
 
-    List<String> querryPrimaryActivity();
+    List<String> queryPrimaryActivity();
 
-    List<String> querrySecondaryActivity(String primaryActivity);
+    List<String> querySecondaryActivity(String primaryActivity);
 
-    Date getCurrentDate(String date);
+    Date getCurrentDate();
 
     Time  stringToTime(String time);
 
-    boolean insertTimeSheet(Timesheet timesheet);
+    boolean insertTimesheet(Timesheet timesheet);
 
-    boolean updateTimeSheet(Timesheet timesheet);
+    boolean updateTimesheet(Timesheet timesheet);
 
-    List<Timesheet> querryTimeSheetByBossId(String bossId);
+    boolean updateStateByTimesheetId(String timesheetId,String state);
 
-    Timesheet querryByPrimaryKey();
+    List<Timesheet> queryTimesheetByBossId(String bossId);
+
+    List<Timesheet> queryTimesheetByEmployeeId(String employeeId);
+
+    Timesheet queryByPrimaryKey();
 
 
 }

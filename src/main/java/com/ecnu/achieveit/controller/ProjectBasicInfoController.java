@@ -42,7 +42,7 @@ public class ProjectBasicInfoController {
      */
     @GetMapping("/project_infos")
     public Object list2(@RequestAttribute("userId")String userId){
-        List<ProjectBasicInfo> result = projectService.querryProjectByEmployeeId(userId);
+        List<ProjectBasicInfo> result = projectService.queryProjectByEmployeeId(userId);
 
         if(result.size() == 0) return RestResponse.fail("null");
         else return RestResponse.success(result);
@@ -51,7 +51,7 @@ public class ProjectBasicInfoController {
     @GetMapping("/project_infos/key_word/{key_word}")
     public Object list3(@PathVariable("key_word")String keyWord,
                         @RequestAttribute("userId")String employeeId){
-        List<ProjectBasicInfo> result = projectService.querryProjectByKeyWord(keyWord,employeeId);
+        List<ProjectBasicInfo> result = projectService.queryProjectByKeyWord(keyWord,employeeId);
 
         if(result== null) return RestResponse.fail();
         return RestResponse.success(result);
@@ -78,7 +78,7 @@ public class ProjectBasicInfoController {
             return RestResponse.fail("该成员不是" + EmployeeTitle.ORG_CONFIG.getTitleName() + "，没有权限");
         }
 
-        List<AssetItem> result = projectService.querryAssetItem();
+        List<AssetItem> result = projectService.queryAssetItem();
         if(result == null) return RestResponse.fail();
         return RestResponse.success(result);
     }

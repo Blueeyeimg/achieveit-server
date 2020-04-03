@@ -15,7 +15,7 @@ public class ProjectIdServiceImpl implements ProjectIdService {
     private ProjectIdMapper projectIdMapper;
 
     @Override
-    public List<ProjectId> querryProjectIds() {
+    public List<ProjectId> queryProjectIds() {
         return projectIdMapper.selectAll();
     }
 

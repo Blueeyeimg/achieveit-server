@@ -161,6 +161,36 @@
     <include refid="Base_Column_List"/>
     FROM timesheet
     WHERE timesheet_id IN (SELECT timesheet_id FROM timesheet a,project_member b WhERE a.employee_id = b.employee_id
-        and b.boss_in_project_id = #{bossId,jdbcType = VARCHAR})
+        AND b.boss_in_project_id = #{bossId,jdbcType = VARCHAR} AND state="已提交" )
   </select>
+  <select id="selectIimesheetByEmployeeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT *
+    FROM timesheet
+    WHERE employee_id = #{employeeId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectPrimaryFunctionByProjectId" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT primary_function
+    FROM project_function
+    WHERE project_id = #{projectId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectSecondaryFunctionByProjectIdAndPrimaryFunction" resultType="java.lang.String">
+    SELECT DISTINCT secondary_function
+    FROM project_function
+    WHERE project_id = #{projectId,jdbcType=VARCHAR} AND primary_function = #{primaryFunction,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAllPrimaryActivity" resultType="java.lang.String">
+    SELECT DISTINCT primary_activity
+    FROM activity
+  </select>
+  <select id="selectSecondaryActivityByPrimaryActivity" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT secondary_activity
+    FROM activity
+    WHERE primary_activity = #{primaryActivity,jdbcType=VARCHAR}
+  </select>
+  <update id="updateStateByTimesheetId" >
+    UPDATE timesheet
+    SET state = #{state,jdbcType=VARCHAR}
+    WHERE timesheet_id = #{timesheetId,jdbcType=VARCHAR}
+  </update>
 </mapper>

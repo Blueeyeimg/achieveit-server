@@ -59,42 +59,42 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectBasicInfo> querryProjectByEmployeeId(String employeeId) {
+    public List<ProjectBasicInfo> queryProjectByEmployeeId(String employeeId) {
         List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByEmployeeId(employeeId);
 
         return result;
     }
 
     @Override
-    public List<ProjectBasicInfo> querryProjectByClientId(String clientId) {
+    public List<ProjectBasicInfo> queryProjectByClientId(String clientId) {
         List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByClientId(clientId);
 
         return result;
     }
 
     @Override
-    public List<ProjectBasicInfo> querryProjectByState(String state) {
+    public List<ProjectBasicInfo> queryProjectByState(String state) {
         List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByState(state);
 
         return result;
     }
 
     @Override
-    public List<ProjectBasicInfo> querryProjectByBossId(String bossId) {
+    public List<ProjectBasicInfo> queryProjectByBossId(String bossId) {
         List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByBossId(bossId);
 
         return  result;
     }
 
     @Override
-    public List<ProjectBasicInfo> querryProjectByKeyWord(String keyWord,String employeeId){
+    public List<ProjectBasicInfo> queryProjectByKeyWord(String keyWord,String employeeId){
         List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByKeyWord(keyWord,employeeId);
 
         return  result;
     }
 
     @Override
-    public List<AssetItem> querryAssetItem() {
+    public List<AssetItem> queryAssetItem() {
         List<AssetItem> result = assetItemMapper.selectAll();
 
         return result;

@@ -50,5 +50,5 @@ public enum ProjectState {
         if(state.equals(PROCESSING.getState()) || state.equals(DELIVERED.getState())
         || state.equals(FINISHED.getState()) || state.equals(ARCHIVED.getState())) return true;
         return false;
-}
+    }
 }

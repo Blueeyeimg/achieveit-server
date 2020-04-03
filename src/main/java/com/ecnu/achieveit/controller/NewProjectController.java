@@ -132,7 +132,7 @@ public class NewProjectController {
         if(!employeeService.checkTitle(userId, EmployeeTitle.MANAGER.getTitleName())){
             return RestResponse.fail("该用户不是项目经理!");
         }
-        List<ProjectId> ids = projectIdService.querryProjectIds();
+        List<ProjectId> ids = projectIdService.queryProjectIds();
         Map<String, Object> result = new HashMap<>();
         result.put("ids", ids.stream().map(ProjectId::getProjectId).toArray(String[]::new));
 

@@ -26,7 +26,7 @@ public class Timesheet implements Serializable {
     private String secondaryActivity;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd ", timezone="GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     private Date date;
 
     @DateTimeFormat(pattern = "HH:mm:ss")
@@ -43,6 +43,8 @@ public class Timesheet implements Serializable {
     private String state;
 
     private static final long serialVersionUID = 1L;
+
+
 
     public Integer getTimesheetId() {
         return timesheetId;
