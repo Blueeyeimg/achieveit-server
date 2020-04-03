@@ -1,7 +1,11 @@
 package com.ecnu.achieveit.service.impl;
 
+import com.ecnu.achieveit.constant.ProjectState;
+import com.ecnu.achieveit.dao.AssetItemMapper;
 import com.ecnu.achieveit.dao.ProjectBasicInfoMapper;
+import com.ecnu.achieveit.model.AssetItem;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
+import com.ecnu.achieveit.model.ProjectId;
 import com.ecnu.achieveit.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +16,10 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     @Autowired(required = false)
-    ProjectBasicInfoMapper projectBasicInfoMapper;
+    private ProjectBasicInfoMapper projectBasicInfoMapper;
+
+    @Autowired(required = false)
+    private AssetItemMapper assetItemMapper;
 
     @Override
     public boolean addProject(ProjectBasicInfo projectBasicInfo) {
@@ -26,6 +33,23 @@ public class ProjectServiceImpl implements ProjectService {
         Integer result = projectBasicInfoMapper.updateByPrimaryKeySelective(projectBasicInfo);
 
         return !result.equals(0);
+    }
+
+    @Override
+    public boolean updateProjectState(ProjectBasicInfo projectBasicInfo,String projectState) {
+        if(!ProjectState.checkState(projectState)) return false;
+        String projectId = projectBasicInfo.getProjectId();
+        int result = projectBasicInfoMapper.updateStateById(projectId, projectState);
+
+        return result!=0;
+    }
+
+    @Override
+    public boolean updateProjectStateById(String projectId, String projectState) {
+        if(!ProjectState.checkState(projectState)) return false;
+        int result = projectBasicInfoMapper.updateStateById(projectId.toString(),projectState);
+
+        return result!=0;
     }
 
     @Override
@@ -67,5 +91,12 @@ public class ProjectServiceImpl implements ProjectService {
         List<ProjectBasicInfo> result = projectBasicInfoMapper.selectByKeyWord(keyWord,employeeId);
 
         return  result;
+    }
+
+    @Override
+    public List<AssetItem> querryAssetItem() {
+        List<AssetItem> result = assetItemMapper.selectAll();
+
+        return result;
     }
 }

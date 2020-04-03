@@ -1,5 +1,7 @@
 package com.ecnu.achieveit.constant;
 
+import java.util.Arrays;
+
 /**
  * @author 倪事通
  */
@@ -33,4 +35,20 @@ public enum ProjectState {
     ProjectState(String state){
         this.state = state;
     }
+
+    public boolean in(String state){
+        long count = Arrays.stream(state.split(",")).filter(r -> this.state.equals(r)).count();
+        return count != 0;
+    }
+
+    /**
+     * 用于检查所要更改的state是否合法，按照业务逻辑只能改为以下四种state
+     * @param state
+     * @return
+     */
+    public static boolean checkState(String state){
+        if(state.equals(PROCESSING.getState()) || state.equals(DELIVERED.getState())
+        || state.equals(FINISHED.getState()) || state.equals(ARCHIVED.getState())) return true;
+        return false;
+}
 }

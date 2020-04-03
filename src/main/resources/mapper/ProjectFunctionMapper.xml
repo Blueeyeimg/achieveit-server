@@ -59,4 +59,14 @@
       </if>
     </trim>
   </insert>
+
+  <select id="selectPrimaryFunction" resultType="java.lang.String">
+    SELECT DISTINCT primary_function
+    FROM project_function
+  </select>
+  <select id="selectSecondaryFunctionByPrimaryFunction" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT  DISTINCT secondary_function
+    FROM project_function
+    WHERE primary_function = #{primaryFunction,jdbcType=VARCHAR}
+  </select>
 </mapper>

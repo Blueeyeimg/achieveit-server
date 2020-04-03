@@ -66,5 +66,4 @@ public interface EmployeeMapper {
     Employee selectByEmail(String email);
 
     List<Employee> selectBasicEmployeeListByTitleId(String titleId);
-
 }

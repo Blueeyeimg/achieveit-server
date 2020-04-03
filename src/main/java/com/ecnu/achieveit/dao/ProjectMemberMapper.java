@@ -60,4 +60,6 @@ public interface ProjectMemberMapper {
     List<ProjectMember> selectListByProjectId(String projectId);
 
     List<ProjectMember> selectListByRole(@Param("projectId") String projectId, @Param("role") String role);
+
+    List<String> selectProjectIdByEmployeeId(String employeeId);
 }

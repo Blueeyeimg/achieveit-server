@@ -58,7 +58,6 @@ public class NewProjectController {
             return RestResponse.fail("该用户不是项目经理!");
         }
         projectBasicInfo.setState(ProjectState.APPLIED.getState());
-
         if(newProjectFlowService.createProject(userId,projectBasicInfo)){
             return RestResponse.success(projectBasicInfo.getProjectId());
         }

@@ -276,4 +276,9 @@
       file_system_address = #{fileSystemAddress,jdbcType=VARCHAR}
     where project_id = #{projectId,jdbcType=VARCHAR}
   </update>
+  <update id="updateStateById" >
+    UPDATE project_basic_info
+    SET state = #{state,jdbcType=VARCHAR}
+    WHERE project_id = #{projectId,jdbcType=VARCHAR}
+  </update>
 </mapper>

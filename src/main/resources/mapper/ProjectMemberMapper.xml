@@ -185,6 +185,10 @@
      where project_id = #{projectId,jdbcType=VARCHAR}
      and role LIKE CONCAT('%',#{role,jdbcType=VARCHAR},'%')
   </select>
-
+  <select id="selectProjectIdByEmployeeId" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT project_id
+    FROM project_member
+    WHERE employee_id = #{employeeId,jdbcType=VARCHAR}
+  </select>
 
 </mapper>
