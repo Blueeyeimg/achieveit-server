@@ -17,19 +17,6 @@ public class GlobalExceptionHandler {
         return ResultBody.error(e.getErrorCode(),e.getErrorMsg());
     }*/
 
-    /**
-     * 处理空指针的异常
-     * @param req
-     * @param e
-     * @return
-     */
-    @ExceptionHandler(value =NullPointerException.class)
-    @ResponseBody
-    public Object exceptionHandler(HttpServletRequest req, NullPointerException e){
-        LogUtil.i("发生空指针异常！原因是:",e.toString());
-        return RestResponse.fail("空指针异常");
-    }
-
 
     /**
      * 处理其他异常

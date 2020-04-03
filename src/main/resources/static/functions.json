@@ -1,0 +1,26 @@
+{
+  "projectId": "2020-adgd-D-04",
+  "functions": [
+    {
+      "primaryFunction": "TimeSheet",
+      "secondaryFunction": [
+        "applySheet"
+      ]
+    },
+    {
+      "primaryFunction": "Authorization",
+      "secondaryFunction": [
+        "login",
+        "logout"
+      ]
+    },
+    {
+      "primaryFunction": "ProjectState",
+      "secondaryFunction": [
+        "changState",
+        "finishProject",
+        "added"
+      ]
+    }
+  ]
+}

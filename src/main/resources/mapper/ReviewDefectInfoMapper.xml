@@ -171,4 +171,36 @@
       link = #{link,jdbcType=VARCHAR}
     where review_defect_id = #{reviewDefectId,jdbcType=INTEGER}
   </update>
+    <select id="selectListByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from review_defect_info
+        where project_id = #{projectId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectListByProviderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from review_defect_info
+        where provider_id = #{providerId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectListBySolverId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from review_defect_info
+        where solver_id = #{solverId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectListByProjectIdAndState" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from review_defect_info
+        where project_id = #{projectId,jdbcType=VARCHAR}
+        and state = #{state,jdbcType=INTEGER}
+    </select>
+    <select id="selectListByProjectIdAndType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from review_defect_info
+        where project_id = #{projectId,jdbcType=VARCHAR}
+        and type = #{type,jdbcType=VARCHAR}
+    </select>
 </mapper>

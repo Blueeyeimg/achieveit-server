@@ -171,4 +171,18 @@
     where project_id = #{projectId,jdbcType=VARCHAR}
       and device_id = #{deviceId,jdbcType=VARCHAR}
   </update>
+
+    <select id="selectListByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from project_device
+        where project_id = #{projectId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectListByEmployeeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from project_device
+        where device_manager_id = #{employeeId,jdbcType=VARCHAR}
+    </select>
 </mapper>

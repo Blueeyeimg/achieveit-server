@@ -1,6 +1,9 @@
 package com.ecnu.achieveit.dao;
 
 import com.ecnu.achieveit.model.ReviewDefectInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ReviewDefectInfoMapper {
     /**
@@ -50,4 +53,19 @@ public interface ReviewDefectInfoMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ReviewDefectInfo record);
+
+
+    List<ReviewDefectInfo> selectListByProjectId(String projectId);
+
+
+    List<ReviewDefectInfo> selectListByProviderId(String providerId);
+
+
+    List<ReviewDefectInfo> selectListBySolverId(String solverId);
+
+
+    List<ReviewDefectInfo> selectListByProjectIdAndState(@Param("projectId") String projectId, @Param("state") Integer state);
+
+
+    List<ReviewDefectInfo> selectListByProjectIdAndType(@Param("projectId")String projectId, @Param("type") String type);
 }

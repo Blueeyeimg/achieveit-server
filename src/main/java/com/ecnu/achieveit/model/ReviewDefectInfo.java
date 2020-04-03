@@ -1,8 +1,10 @@
 package com.ecnu.achieveit.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -37,10 +39,19 @@ public class ReviewDefectInfo implements Serializable {
 
     private String description;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date date;
 
     private String link;
 
     private static final long serialVersionUID = 1L;
+
+    public boolean valid(){
+        return projectId != null
+                && type != null
+                && (type.equals("defect") || type.equals("review"))
+                && providerId != null;
+    }
 
 }
