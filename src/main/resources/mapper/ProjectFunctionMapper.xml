@@ -59,7 +59,20 @@
       </if>
     </trim>
   </insert>
+
+  <select id="selectPrimaryFunction" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT primary_function
+    FROM project_function
+    WHERE project_id = #{projectId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectSecondaryFunctionByPrimaryFunction"  resultType="java.lang.String">
+    SELECT  DISTINCT secondary_function
+    FROM project_function
+    WHERE project_id = #{projectId,jdbcType=VARCHAR} AND primary_function = #{primaryFunction,jdbcType=VARCHAR}
+  </select>
+
   <select id="selectListByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
       SELECT * FROM project_function WHERE project_id = #{projectId,jdbcType=VARCHAR}
   </select>
+
 </mapper>

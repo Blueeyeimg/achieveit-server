@@ -1,5 +1,9 @@
 package com.ecnu.achieveit.controller;
 
+import com.ecnu.achieveit.constant.EmployeeTitle;
+import com.ecnu.achieveit.constant.ProjectState;
+import com.ecnu.achieveit.dao.AssetItemMapper;
+import com.ecnu.achieveit.model.AssetItem;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
 import com.ecnu.achieveit.model.ProjectId;
 import com.ecnu.achieveit.service.EmployeeService;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ecnu.achieveit.constant.ProjectState.ARCHIVED;
 
 @RestController
 public class ProjectBasicInfoController {
@@ -36,7 +42,7 @@ public class ProjectBasicInfoController {
      */
     @GetMapping("/project_infos")
     public Object list2(@RequestAttribute("userId")String userId){
-        List<ProjectBasicInfo> result = projectService.querryProjectByEmployeeId(userId);
+        List<ProjectBasicInfo> result = projectService.queryProjectByEmployeeId(userId);
 
         if(result.size() == 0) return RestResponse.fail("null");
         else return RestResponse.success(result);
@@ -45,27 +51,39 @@ public class ProjectBasicInfoController {
     @GetMapping("/project_infos/key_word/{key_word}")
     public Object list3(@PathVariable("key_word")String keyWord,
                         @RequestAttribute("userId")String employeeId){
-        List<ProjectBasicInfo> result = projectService.querryProjectByKeyWord(keyWord,employeeId);
+        List<ProjectBasicInfo> result = projectService.queryProjectByKeyWord(keyWord,employeeId);
 
         if(result== null) return RestResponse.fail();
         return RestResponse.success(result);
     }
 
-    /*@GetMapping("project_id")
-    public Object list4(){
-        //这里要先检查title
-        List<ProjectId> result = projectIdService.querryProjectIds();
+    @PutMapping("/state")
+    public  Object updateState(@RequestParam("projectId")String projectId,
+                               @RequestParam("state")String state,
+                               @RequestAttribute("userId")String userId){
+        if(!ProjectState.checkState(state))return RestResponse.fail("请检查目标状态是否合法");
+        if(state.equals(ARCHIVED.getState())){
+            if(!employeeService.queryBasicEmployeeById(userId).getTitle().equals(EmployeeTitle.ORG_CONFIG.getTitleName()))
+                return RestResponse.fail("该成员不是" + EmployeeTitle.ORG_CONFIG.getTitleName() + "，不能修改项目状态为已归档。");
+        }
+        else if(!employeeService.queryBasicEmployeeById(userId).getTitle().equals(EmployeeTitle.MANAGER.getTitleName()))
+            return RestResponse.fail("该成员不是" + EmployeeTitle.MANAGER.getTitleName() + "，不能修改项目状态。");
+        projectService.updateProjectStateById(projectId,state);
+        return RestResponse.success();
+    }
+
+    @GetMapping("/check_assets")
+    public  Object checkAssets(@RequestAttribute("userId") String userId){
+        if(!employeeService.queryBasicEmployeeById(userId).getTitle().equals(EmployeeTitle.ORG_CONFIG.getTitleName())){
+            return RestResponse.fail("该成员不是" + EmployeeTitle.ORG_CONFIG.getTitleName() + "，没有权限");
+        }
+
+        List<AssetItem> result = projectService.queryAssetItem();
         if(result == null) return RestResponse.fail();
         return RestResponse.success(result);
     }
 
-    @DeleteMapping("project_id/{id}")
-    public Object delete1(@PathVariable("id") String projectId){
-        Boolean result = projectIdService.deleteProjectId(projectId);
-        if(!result){
-            return RestResponse.fail();
-        }
-        return RestResponse.success();
-    }*/
+
+
 
 }

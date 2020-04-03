@@ -100,4 +100,17 @@
       secondary_activity = #{secondaryActivity,jdbcType=VARCHAR}
     where activity_id = #{activityId,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectAllPrimaryActivity" resultType="java.lang.String">
+    SELECT DISTINCT primary_activity
+    FROM activity
+  </select>
+
+  <select id="selectSecondaryActivityByPrimaryActivity" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT secondary_activity
+    FROM activity
+    WHERE primary_activity = #{primaryActivity,jdbcType=VARCHAR}
+  </select>
+
+
 </mapper>

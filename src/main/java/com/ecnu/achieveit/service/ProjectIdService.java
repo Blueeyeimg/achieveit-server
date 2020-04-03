@@ -11,5 +11,5 @@ public interface ProjectIdService {
 
     boolean updateProjectId(String oldProjectId,String newProjectId);
 
-    List<ProjectId> querryProjectIds();
+    List<ProjectId> queryProjectIds();
 }
