@@ -87,8 +87,18 @@ public class ProjectMemberController {
 
     @DeleteMapping("/member")
     public Object delete(@RequestAttribute("userId") String userId, ProjectMember projectMember){
+        LogUtil.i("userId: " + userId);
+        LogUtil.i("ProjectMember: " + projectMember.toString());
+        LogUtil.i("projectId: " + projectMember.getProjectId());
+        LogUtil.i("employeeId: " + projectMember.getEmployeeId());
+
         ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectMember.getProjectId(),userId));
+
+        if(ObjectUtils.isEmpty(user)){
+            LogUtil.i("项目用户为空");
+        }
         if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
+            LogUtil.i("用户在项目中的角色为" + user.getRole());
             return RestResponse.noPermission("当前用户不是该项目的项目经理，无法删除项目成员");
         }
 
