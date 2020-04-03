@@ -60,13 +60,13 @@ public class TimesheetServiceImpl implements TimesheetService {
     }
 
     @Override
-    public List<String> querryPrimaryFunction() {
-        return projectFunctionMapper.selectPrimaryFunction();
+    public List<String> querryPrimaryFunction(String projectId) {
+        return projectFunctionMapper.selectPrimaryFunctionByProjectId(projectId);
     }
 
     @Override
-    public List<String> querrySecondaryFunction(String primaryFunction) {
-        return projectFunctionMapper.selectSecondaryFunctionByPrimaryFunction(primaryFunction);
+    public List<String> querrySecondaryFunction(String projectId,String primaryFunction) {
+        return projectFunctionMapper.selectSecondaryFunctionByPrimaryFunctionAndProjectId(projectId,primaryFunction);
     }
 
     @Override

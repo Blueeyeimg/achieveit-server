@@ -14,15 +14,16 @@ public class TimesheetController {
     private TimesheetService timesheetService;
 
     @GetMapping("/timesheet/primaryfunction")
-    public Object listPrimaryFunction(){
-        List<String> result = timesheetService.querryPrimaryFunction();
+    public Object listPrimaryFunction(@RequestParam("projectId")String projectId){
+        List<String> result = timesheetService.querryPrimaryFunction(projectId);
         if(result == null) return RestResponse.fail();
         return RestResponse.success(result);
     }
 
     @GetMapping("/timesheet/secondaryfunction")
-    public Object listSecondaryFunction(@RequestParam("primaryFunction")String primaryFunction){
-        List<String> result = timesheetService.querrySecondaryFunction(primaryFunction);
+    public Object listSecondaryFunction(@RequestParam("projectId")String projectId,
+                                        @RequestParam("primaryFunction")String primaryFunction){
+        List<String> result = timesheetService.querrySecondaryFunction(projectId,primaryFunction);
         if(result == null) return RestResponse.fail();
         return RestResponse.success(result);
     }

@@ -1,6 +1,7 @@
 package com.ecnu.achieveit.dao;
 
 import com.ecnu.achieveit.model.ProjectFunctionKey;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,7 +30,10 @@ public interface ProjectFunctionMapper {
      */
     int insertSelective(ProjectFunctionKey record);
 
-    List<String> selectPrimaryFunction();
+    List<String> selectPrimaryFunctionByProjectId(String projectId);
 
-    List<String> selectSecondaryFunctionByPrimaryFunction(String primaryFunction);
+    List<String> selectSecondaryFunctionByPrimaryFunctionAndProjectId(@Param("projectId") String projectId,
+                                                                      @Param("primaryFunction") String primaryFunction);
+
+    List<ProjectFunctionKey> selectListByProjectId(String projectId);
 }

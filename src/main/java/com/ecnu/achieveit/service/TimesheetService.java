@@ -10,9 +10,9 @@ import java.util.List;
 public interface TimesheetService {
     List<String> querryProjectIdByEmployeeId(String employeeId);
 
-    List<String> querryPrimaryFunction();
+    List<String> querryPrimaryFunction(String projectId);
 
-    List<String> querrySecondaryFunction(String primaryFunction);
+    List<String> querrySecondaryFunction(String projectId,String primaryFunction);
 
     List<String> querryPrimaryActivity();
 
