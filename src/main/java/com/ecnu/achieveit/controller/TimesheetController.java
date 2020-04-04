@@ -75,7 +75,7 @@ public class TimesheetController {
         return RestResponse.success();
     }
 
-    @GetMapping("timesheet/user")
+    @GetMapping("/timesheet/user")
     /**
      * 前端应对不同的状态有不同的权限，例如“草稿”和“驳回”是可以编辑的，“已提交和已确认”是不能编辑的
      */
