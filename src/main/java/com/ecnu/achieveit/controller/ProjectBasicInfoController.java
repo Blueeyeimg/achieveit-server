@@ -44,7 +44,7 @@ public class ProjectBasicInfoController {
     public Object list2(@RequestAttribute("userId")String userId){
         List<ProjectBasicInfo> result = projectService.queryProjectByEmployeeId(userId);
 
-        if(result.size() == 0) return RestResponse.fail("null");
+        if(result == null) return RestResponse.fail("");
         else return RestResponse.success(result);
     }
 
