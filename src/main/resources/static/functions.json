@@ -4,22 +4,22 @@
     {
       "primaryFunction": "TimeSheet",
       "secondaryFunction": [
-        "applySheet"
+        "applyTimeSheet"
       ]
     },
     {
       "primaryFunction": "Authorization",
       "secondaryFunction": [
         "login",
-        "logout"
+        "logout",
+        "auth2"
       ]
     },
     {
       "primaryFunction": "ProjectState",
       "secondaryFunction": [
         "changState",
-        "finishProject",
-        "added"
+        "finishProject"
       ]
     }
   ]

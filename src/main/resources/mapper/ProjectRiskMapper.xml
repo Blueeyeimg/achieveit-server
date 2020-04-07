@@ -182,4 +182,30 @@
     where project_id = #{projectId,jdbcType=VARCHAR}
       and risk_id = #{riskId,jdbcType=VARCHAR}
   </update>
+
+    <select id="selectByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from project_risk
+        where project_id = #{projectId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByOwnerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from project_risk
+        where risk_owner_id = #{ownerId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByRelatedId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--WITH risk_related_special AS
+        (SELECT * FROM risk_related
+        WHERE risk_related_id = #{relatedId,jdbcType=VARCHAR})
+        select
+        <include refid="Base_Column_List" />
+        from project_risk NATURAL JOIN risk_related_special-->
+
+        select
+        <include refid="Base_Column_List" />
+        from project_risk NATURAL JOIN risk_related
+        where risk_related_id = #{relatedId,jdbcType=VARCHAR}
+    </select>
 </mapper>

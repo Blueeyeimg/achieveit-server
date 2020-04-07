@@ -28,12 +28,12 @@ public class ProjectRisk extends ProjectRiskKey implements Serializable {
 
     private String riskOwnerId;
 
-    private Long riskTrackFrequency;
+    private Double riskTrackFrequency;
 
     private static final long serialVersionUID = 1L;
 
 
-    public ProjectRisk(String projectId, String riskId, String type, String description, Integer riskLevel, String influence, String reactiveStrategy, String riskState, String riskOwnerId, Long riskTrackFrequency) {
+    public ProjectRisk(String projectId, String riskId, String type, String description, Integer riskLevel, String influence, String reactiveStrategy, String riskState, String riskOwnerId, Double riskTrackFrequency) {
         super(projectId, riskId);
         this.type = type;
         this.description = description;

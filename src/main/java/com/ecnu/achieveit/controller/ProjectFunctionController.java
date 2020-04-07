@@ -59,7 +59,7 @@ public class ProjectFunctionController {
             workbook = excelService.writeProjectFunction(workbook, functionKeys);
 
             response.setContentType("application/binary;charset=ISO8859-1");
-            String fileName = java.net.URLEncoder.encode("项目功能列表", "UTF-8");
+            String fileName = java.net.URLEncoder.encode(projectId + "-功能列表", "UTF-8");
             response.setHeader("Content-disposition", "attachment; filename=" + fileName + ".xlsx");
             ServletOutputStream out = null;
             out = response.getOutputStream();
