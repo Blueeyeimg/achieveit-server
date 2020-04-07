@@ -72,6 +72,14 @@ public class ProjectBasicInfoController {
         return RestResponse.success();
     }
 
+    @GetMapping("/state")
+    public Object list4(@RequestParam("state")String state,
+                        @RequestAttribute("userId")String userId){
+        List<ProjectBasicInfo> result = projectService.queryProjectByState(state);
+        if(result == null) return RestResponse.fail();
+        return RestResponse.success(result);
+    }
+
     @GetMapping("/check_assets")
     public  Object checkAssets(@RequestAttribute("userId") String userId){
         if(!employeeService.queryBasicEmployeeById(userId).getTitle().equals(EmployeeTitle.ORG_CONFIG.getTitleName())){
