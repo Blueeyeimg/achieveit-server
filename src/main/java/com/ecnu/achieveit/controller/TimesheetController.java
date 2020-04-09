@@ -3,6 +3,7 @@ package com.ecnu.achieveit.controller;
 import com.ecnu.achieveit.model.Timesheet;
 import com.ecnu.achieveit.service.TimesheetService;
 import com.ecnu.achieveit.service.impl.TimesheetServiceImpl;
+import com.ecnu.achieveit.util.LogUtil;
 import com.ecnu.achieveit.util.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -60,11 +61,11 @@ public class TimesheetController {
     @PostMapping("/timesheet")
     public Object saveTimesheet(Timesheet record,
                                 @RequestAttribute("userId")String employeeId){
-        System.out.println("record = " + record + ", employeeId = " + employeeId);
-        System.out.println("record.getDate() = " + record.getDate().toString());
+        LogUtil.i("record = " + record + ", employeeId = " + employeeId);
+        LogUtil.i("record.getDate() = " + record.getDate().toString());
         //先判断是否超时
         Date previousDate = new Date(record.getDate().getTime());
-        System.out.println("previousDate = " + previousDate);
+        LogUtil.i("previousDate = " + previousDate);
         Date currentDate = new java.sql.Date(System.currentTimeMillis());
         if(isOvertime(previousDate,currentDate)) return RestResponse.fail("超时填写");
 

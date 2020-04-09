@@ -1,9 +1,11 @@
 package com.ecnu.achieveit.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -29,13 +31,14 @@ public class Timesheet implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     private Date date;
 
-    @DateTimeFormat(pattern = "HH:mm:ss")
-    @JsonFormat(pattern="HH:mm:ss", timezone="GMT+8")
-    private Date startTime;
+//    @DateTimeFormat(pattern = "HH:mm:ss")
 
-    @DateTimeFormat(pattern = "HH:mm:ss")
     @JsonFormat(pattern="HH:mm:ss", timezone="GMT+8")
-    private Date endTime;
+    private Time startTime;
+
+//    @DateTimeFormat(pattern = "HH:mm:ss")
+    @JsonFormat(pattern="HH:mm:ss", timezone="GMT+8")
+    private Time endTime;
 
     /**
      * 草稿、已提交、已确认、打回
@@ -114,7 +117,7 @@ public class Timesheet implements Serializable {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Time startTime) {
         this.startTime = startTime;
     }
 
@@ -122,7 +125,7 @@ public class Timesheet implements Serializable {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
 
