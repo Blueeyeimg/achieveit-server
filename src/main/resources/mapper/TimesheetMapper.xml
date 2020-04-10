@@ -188,9 +188,9 @@
     FROM activity
     WHERE primary_activity = #{primaryActivity,jdbcType=VARCHAR}
   </select>
-  <update id="updateStateByTimesheetId" >
+  <update id="updateStateByTimesheetId" parameterType="java.lang.Integer">
     UPDATE timesheet
     SET state = #{state,jdbcType=VARCHAR}
-    WHERE timesheet_id = #{timesheetId,jdbcType=VARCHAR}
+    WHERE timesheet_id = #{timesheetId,jdbcType=INTEGER}
   </update>
 </mapper>

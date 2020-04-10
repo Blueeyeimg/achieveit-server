@@ -119,4 +119,14 @@ public class ProjectMemberController {
         return RestResponse.success(Arrays.stream(ProjectRole.values()).map(ProjectRole::getRole).collect(Collectors.toList()));
     }
 
+    @GetMapping("/memberinfo/{projectId}")
+    public Object getProjectMemberByKey(@PathVariable("projectId")String projectId,
+                                      @RequestAttribute("userId")String employeeId){
+        ProjectMemberKey projectMemberKey = new ProjectMemberKey(projectId,employeeId);
+        ProjectMember result = projectMemberService.queryMemberByKey(projectMemberKey);
+
+        if(result == null) return RestResponse.fail();
+        return RestResponse.success(result);
+    }
+
 }

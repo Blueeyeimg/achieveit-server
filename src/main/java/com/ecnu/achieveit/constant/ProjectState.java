@@ -23,6 +23,8 @@ public enum ProjectState {
 
     FINISHED("已结束"),
 
+    APPLYINGARCHIVE("申请归档"),
+
     ARCHIVED("已归档");
 
 
@@ -42,13 +44,14 @@ public enum ProjectState {
     }
 
     /**
-     * 用于检查所要更改的state是否合法，按照业务逻辑只能改为以下四种state
+     * 用于检查所要更改的state是否合法，按照业务逻辑只能改为以下五种state
      * @param state
      * @return
      */
     public static boolean checkState(String state){
         if(state.equals(PROCESSING.getState()) || state.equals(DELIVERED.getState())
-        || state.equals(FINISHED.getState()) || state.equals(ARCHIVED.getState())) return true;
+        || state.equals(FINISHED.getState()) ||  state.equals(APPLYINGARCHIVE.getState())
+                || state.equals(ARCHIVED.getState())) return true;
         return false;
     }
 }

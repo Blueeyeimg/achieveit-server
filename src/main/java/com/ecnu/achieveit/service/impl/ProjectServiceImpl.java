@@ -53,6 +53,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public boolean updateOutputLinkOfProjectInfo(String projectId, String outputLink) {
+        int result = projectBasicInfoMapper.updateOutputLinkOfProjectInfo(projectId,outputLink);
+
+        return result!=0;
+    }
+
+    @Override
     public ProjectBasicInfo querryProjectByPrimaryKey(String projectId) {
         ProjectBasicInfo result = projectBasicInfoMapper.selectByPrimaryKey(projectId);
         return result;

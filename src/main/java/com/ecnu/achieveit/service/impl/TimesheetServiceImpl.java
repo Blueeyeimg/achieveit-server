@@ -3,6 +3,7 @@ package com.ecnu.achieveit.service.impl;
 import com.ecnu.achieveit.dao.*;
 import com.ecnu.achieveit.model.Timesheet;
 import com.ecnu.achieveit.service.TimesheetService;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Date;
@@ -122,13 +123,19 @@ public class TimesheetServiceImpl implements TimesheetService {
     }
 
     @Override
-    public Timesheet queryByPrimaryKey() {
-        return timesheetMapper.selectByPrimaryKey(1);
+    public Timesheet queryByPrimaryKey(Integer timesheetId) {
+        return timesheetMapper.selectByPrimaryKey(timesheetId);
     }
 
     @Override
-    public boolean updateStateByTimesheetId(String timesheetId, String state) {
+    public boolean updateStateByTimesheetId(Integer timesheetId, String state) {
         int result = timesheetMapper.updateStateByTimesheetId(timesheetId,state);
+        return result!=0;
+    }
+
+    @Override
+    public boolean deleteTimesheetByPrimaryKey(Integer timesheetId) {
+        int result = timesheetMapper.deleteByPrimaryKey(timesheetId);
         return result!=0;
     }
 }

@@ -26,13 +26,15 @@ public interface TimesheetService {
 
     boolean updateTimesheet(Timesheet timesheet);
 
-    boolean updateStateByTimesheetId(String timesheetId,String state);
+    boolean updateStateByTimesheetId(Integer timesheetId,String state);
+
+    boolean deleteTimesheetByPrimaryKey(Integer timesheetId);
 
     List<Timesheet> queryTimesheetByBossId(String bossId);
 
     List<Timesheet> queryTimesheetByEmployeeId(String employeeId);
 
-    Timesheet queryByPrimaryKey();
+    Timesheet queryByPrimaryKey(Integer timesheetId);
 
 
 }

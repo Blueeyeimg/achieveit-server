@@ -93,4 +93,7 @@ public interface ProjectBasicInfoMapper {
 
      int updateStateById(@Param("projectId") String projectId,
                          @Param("state") String state);
+
+     int updateOutputLinkOfProjectInfo(@Param("projectId")String projectId,
+                                       @Param("outputLink")String outputLink);
 }

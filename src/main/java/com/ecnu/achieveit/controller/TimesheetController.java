@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
-import static com.ecnu.achieveit.constant.TimesheetState.BACK;
-import static com.ecnu.achieveit.constant.TimesheetState.CONFIRMED;
+import static com.ecnu.achieveit.constant.TimesheetState.*;
 
 @RestController
 public class TimesheetController {
@@ -97,7 +97,7 @@ public class TimesheetController {
     }
 
     @PostMapping("/timesheet/confirm")
-    public Object changeTimesheetState(@RequestParam("timesheetId")String timesheetId,
+    public Object changeTimesheetState(@RequestParam("timesheetId")Integer timesheetId,
                                        @RequestParam("state")String state){
         if(!(state.equals(CONFIRMED.getState()) || state.equals(BACK.getState()))){
             return RestResponse.fail("状态设置错误");
@@ -105,6 +105,20 @@ public class TimesheetController {
         boolean result = timesheetService.updateStateByTimesheetId(timesheetId,state);
 
         if(!result) return RestResponse.fail();
+        return RestResponse.success();
+    }
+
+    @DeleteMapping("/timesheet")
+    public Object deletTimesheetDraft(@RequestParam("timesheetId")Integer timesheetId,
+                                      @RequestAttribute("userId")String userId){
+        Timesheet result = timesheetService.queryByPrimaryKey(timesheetId);
+        if(!(result.getEmployeeId().equals(userId)))
+            return RestResponse.fail("只能删除属于该用户自己的工时信息");
+        if (!(result.getState().equals(DRAFT.getState())))
+            return RestResponse.fail("只能删除状态为草稿的工时信息");
+
+        timesheetService.deleteTimesheetByPrimaryKey(timesheetId);
+        LogUtil.i("已删除id为："+timesheetId+"的工时信息");
         return RestResponse.success();
     }
 

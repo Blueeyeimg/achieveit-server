@@ -16,6 +16,8 @@ public interface ProjectService {
 
     boolean updateProjectStateById(String projectId, String projectState);
 
+    boolean updateOutputLinkOfProjectInfo(String projectId,String outputLink);
+
     ProjectBasicInfo querryProjectByPrimaryKey(String projectId);
 
     List<ProjectBasicInfo> queryProjectByEmployeeId(String employeeId);

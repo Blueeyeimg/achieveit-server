@@ -22,7 +22,7 @@ public interface TimesheetMapper {
 
     List<Timesheet> selectIimesheetByEmployeeId(String employeeId);
 
-    int updateStateByTimesheetId(@Param("timesheetId") String timesheetId,
+    int updateStateByTimesheetId(@Param("timesheetId") Integer timesheetId,
                                  @Param("state") String state);
 
     List<String> selectPrimaryFunctionByProjectId(String projectId);
