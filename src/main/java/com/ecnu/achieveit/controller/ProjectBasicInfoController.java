@@ -126,7 +126,8 @@ public class ProjectBasicInfoController {
             LogUtil.i("用户在项目中的角色为" + user.getRole());
             return RestResponse.noPermission("当前用户不是该项目的项目经理，无法修改项目基本信息");
         }
-        String state = projectBasicInfo.getState();
+        ProjectBasicInfo projectBasicInfo1 = projectService.querryProjectByPrimaryKey(projectId);
+        String state = projectBasicInfo1.getState();
         if(state.equals(ARCHIVED.getState())) return RestResponse.fail("不能更新状态为已归档的项目");
 
         Boolean result = projectService.updateProject(projectBasicInfo);
