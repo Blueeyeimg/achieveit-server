@@ -227,7 +227,11 @@ class TimesheetControllerTest {
                         .andDo(MockMvcResultHandlers.print())
                         .andReturn();
         JSONObject response = JSONObject.parseObject(mvcResult.getResponse().getContentAsString());
-        assertEquals(0,response.getIntValue("code"));
+        Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        Date previousDate = Date.valueOf("2020-04-08");
+        if(TimesheetController.isOvertime(previousDate,currentDate))
+            assertEquals(2,response.getIntValue("code"));
+        else assertEquals(0,response.getIntValue("code"));
     }
 
     @Test

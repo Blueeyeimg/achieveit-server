@@ -117,5 +117,21 @@ public class ProjectBasicInfoController {
         return RestResponse.success();
     }
 
+    @PostMapping("/updateprojectinfo")
+    public Object updateProjectInfo(ProjectBasicInfo projectBasicInfo,
+                                    @RequestAttribute("userId")String userId){
+        String projectId = projectBasicInfo.getProjectId();
+        ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectId,userId));
+        if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
+            LogUtil.i("用户在项目中的角色为" + user.getRole());
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法修改项目基本信息");
+        }
+        String state = projectBasicInfo.getState();
+        if(state.equals(ARCHIVED.getState())) return RestResponse.fail("不能更新状态为已归档的项目");
 
+        Boolean result = projectService.updateProject(projectBasicInfo);
+        if(!result)return RestResponse.fail();
+        LogUtil.i("项目"+projectId.toString()+"更新成功");
+        return  RestResponse.success();
+    }
 }
