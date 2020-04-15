@@ -32,7 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean updateProject(ProjectBasicInfo projectBasicInfo) {
         Integer result = projectBasicInfoMapper.updateByPrimaryKeySelective(projectBasicInfo);
 
-        return !result.equals(0);
+        return result!=0;
     }
 
     @Override
@@ -48,6 +48,13 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean updateProjectStateById(String projectId, String projectState) {
         if(!ProjectState.checkState(projectState)) return false;
         int result = projectBasicInfoMapper.updateStateById(projectId.toString(),projectState);
+
+        return result!=0;
+    }
+
+    @Override
+    public boolean updateOutputLinkOfProjectInfo(String projectId, String outputLink) {
+        int result = projectBasicInfoMapper.updateOutputLinkOfProjectInfo(projectId,outputLink);
 
         return result!=0;
     }

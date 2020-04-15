@@ -191,6 +191,6 @@
   <update id="updateStateByTimesheetId" >
     UPDATE timesheet
     SET state = #{state,jdbcType=VARCHAR}
-    WHERE timesheet_id = #{timesheetId,jdbcType=VARCHAR}
+    WHERE timesheet_id = #{timesheetId,jdbcType=INTEGER}
   </update>
 </mapper>

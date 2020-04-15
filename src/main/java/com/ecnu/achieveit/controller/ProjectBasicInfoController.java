@@ -1,17 +1,19 @@
 package com.ecnu.achieveit.controller;
 
 import com.ecnu.achieveit.constant.EmployeeTitle;
+import com.ecnu.achieveit.constant.ProjectRole;
 import com.ecnu.achieveit.constant.ProjectState;
 import com.ecnu.achieveit.dao.AssetItemMapper;
-import com.ecnu.achieveit.model.AssetItem;
-import com.ecnu.achieveit.model.ProjectBasicInfo;
-import com.ecnu.achieveit.model.ProjectId;
+import com.ecnu.achieveit.model.*;
 import com.ecnu.achieveit.service.EmployeeService;
 import com.ecnu.achieveit.service.ProjectIdService;
+import com.ecnu.achieveit.service.ProjectMemberService;
 import com.ecnu.achieveit.service.ProjectService;
+import com.ecnu.achieveit.util.LogUtil;
 import com.ecnu.achieveit.util.RestResponse;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class ProjectBasicInfoController {
     private ProjectService projectService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ProjectMemberService projectMemberService;
     @Autowired
     private ProjectIdService projectIdService;
 
@@ -57,11 +61,19 @@ public class ProjectBasicInfoController {
         return RestResponse.success(result);
     }
 
+    /**
+     * 该方法用于更改项目的状态，例如改为已结束、申请归档、已归档等等
+     * @param projectId
+     * @param state
+     * @param userId
+     * @return
+     */
     @PutMapping("/state")
     public  Object updateState(@RequestParam("projectId")String projectId,
                                @RequestParam("state")String state,
                                @RequestAttribute("userId")String userId){
-        if(!ProjectState.checkState(state))return RestResponse.fail("请检查目标状态是否合法");
+        if(!ProjectState.checkState(state))
+            return RestResponse.fail("请检查目标状态是否合法");
         if(state.equals(ARCHIVED.getState())){
             if(!employeeService.queryBasicEmployeeById(userId).getTitle().equals(EmployeeTitle.ORG_CONFIG.getTitleName()))
                 return RestResponse.fail("该成员不是" + EmployeeTitle.ORG_CONFIG.getTitleName() + "，不能修改项目状态为已归档。");
@@ -91,7 +103,36 @@ public class ProjectBasicInfoController {
         return RestResponse.success(result);
     }
 
+    @PutMapping("/projectinfo/outputlink")
+    public Object updateOutputLinkOfProjectInfo(@RequestParam("projectId")String projectId,
+                                                @RequestParam("outputLink")String outputLink,
+                                                @RequestAttribute("userId")String userId){
+        ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectId,userId));
+        if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
+            LogUtil.i("用户在项目中的角色为" + user.getRole());
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法修改outputLink");
+        }
+        boolean result = projectService.updateOutputLinkOfProjectInfo(projectId,outputLink);
+        if(!result)return RestResponse.fail();
+        return RestResponse.success();
+    }
 
+    @PostMapping("/updateprojectinfo")
+    public Object updateProjectInfo(ProjectBasicInfo projectBasicInfo,
+                                    @RequestAttribute("userId")String userId){
+        String projectId = projectBasicInfo.getProjectId();
+        ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectId,userId));
+        if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
+            LogUtil.i("用户在项目中的角色为" + user.getRole());
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法修改项目基本信息");
+        }
+        ProjectBasicInfo projectBasicInfo1 = projectService.querryProjectByPrimaryKey(projectId);
+        String state = projectBasicInfo1.getState();
+        if(state.equals(ARCHIVED.getState())) return RestResponse.fail("不能更新状态为已归档的项目");
 
-
+        Boolean result = projectService.updateProject(projectBasicInfo);
+        if(!result)return RestResponse.fail();
+        LogUtil.i("项目"+projectId.toString()+"更新成功");
+        return  RestResponse.success();
+    }
 }

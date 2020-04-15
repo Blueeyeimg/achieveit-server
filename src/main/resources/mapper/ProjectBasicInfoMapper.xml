@@ -281,4 +281,9 @@
     SET state = #{state,jdbcType=VARCHAR}
     WHERE project_id = #{projectId,jdbcType=VARCHAR}
   </update>
+  <update id="updateOutputLinkOfProjectInfo">
+    UPDATE project_basic_info
+    SET output_link = #{outputLink,jdbcType=VARCHAR}
+    WHERE project_id = #{projectId,jdbcType=VARCHAR}
+  </update>
 </mapper>
