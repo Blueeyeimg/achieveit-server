@@ -3,7 +3,7 @@ package com.ecnu.achieveit.service;
 import javax.mail.MessagingException;
 
 /**
- * 常用邮件接口
+ * 邮件接口
  */
 public interface IMailService {
     /**

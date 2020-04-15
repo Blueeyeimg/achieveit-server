@@ -2,6 +2,7 @@ package com.ecnu.achieveit.dao;
 
 import com.ecnu.achieveit.model.ProjectRisk;
 import com.ecnu.achieveit.model.ProjectRiskKey;
+import com.ecnu.achieveit.modelview.RiskTrackEmail;
 
 import java.util.List;
 
@@ -59,4 +60,6 @@ public interface ProjectRiskMapper {
     List<ProjectRisk> selectByOwnerId(String ownerId);
 
     List<ProjectRisk> selectByRelatedId(String relatedId);
+
+    List<RiskTrackEmail> selectProjectListWithManager();
 }

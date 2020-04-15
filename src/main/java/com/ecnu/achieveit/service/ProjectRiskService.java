@@ -3,6 +3,7 @@ package com.ecnu.achieveit.service;
 import com.ecnu.achieveit.model.ProjectRisk;
 import com.ecnu.achieveit.model.ProjectRiskKey;
 import com.ecnu.achieveit.model.RiskRelatedKey;
+import com.ecnu.achieveit.modelview.RiskTrackEmail;
 
 import java.util.List;
 
@@ -29,4 +30,8 @@ public interface ProjectRiskService {
     boolean removeRelated(RiskRelatedKey relatedKey);
 
     boolean modifyRelates(List<RiskRelatedKey> riskRelatedKeys);
+
+    void autoEmailToManager();
+
+    List<RiskTrackEmail> test();
 }

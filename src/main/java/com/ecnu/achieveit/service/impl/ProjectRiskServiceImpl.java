@@ -1,12 +1,18 @@
 package com.ecnu.achieveit.service.impl;
 
+import com.ecnu.achieveit.constant.ProjectRole;
+import com.ecnu.achieveit.dao.ProjectMemberMapper;
 import com.ecnu.achieveit.dao.ProjectRiskMapper;
 import com.ecnu.achieveit.dao.RiskRelatedMapper;
+import com.ecnu.achieveit.model.ProjectMember;
 import com.ecnu.achieveit.model.ProjectRisk;
 import com.ecnu.achieveit.model.ProjectRiskKey;
 import com.ecnu.achieveit.model.RiskRelatedKey;
+import com.ecnu.achieveit.modelview.RiskTrackEmail;
+import com.ecnu.achieveit.service.ProjectMemberService;
 import com.ecnu.achieveit.service.ProjectRiskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -22,6 +28,7 @@ public class ProjectRiskServiceImpl implements ProjectRiskService {
 
     @Autowired(required = false)
     private RiskRelatedMapper riskRelatedMapper;
+
 
     @Override
     public List<ProjectRisk> queryByProjectId(String projectId) {
@@ -99,5 +106,30 @@ public class ProjectRiskServiceImpl implements ProjectRiskService {
         }
 
         return result;
+    }
+
+    @Override
+    @Scheduled(cron = "0 0 9 ? * 6")
+    public void autoEmailToManager() {
+
+        List<RiskTrackEmail> projects = riskMapper.selectProjectListWithManager();
+
+        for(RiskTrackEmail project : projects){
+            List<ProjectRisk> risks = riskMapper.selectByProjectId(project.getProjectId());
+            String to = project.getManagerEmail();
+            String name = project.getManagerName();
+            String projectName = project.getProjectName();
+            StringBuffer riskMassage = new StringBuffer();
+
+            for(ProjectRisk risk : risks){
+                riskMassage.append("风险");
+            }
+        }
+
+    }
+
+    @Override
+    public List<RiskTrackEmail> test(){
+        return riskMapper.selectProjectListWithManager();
     }
 }
