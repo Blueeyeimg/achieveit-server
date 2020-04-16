@@ -6,6 +6,7 @@ import com.ecnu.achieveit.service.EmployeeService;
 import com.ecnu.achieveit.util.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired(required = false)

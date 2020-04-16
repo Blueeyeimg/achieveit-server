@@ -22,9 +22,7 @@
         :
     </p>
     <p>
-        请注意为您负责的项目
-        <span th:text="${project_name}"></span>
-        进行风险跟踪。
+        请注意为与您相关的项目风险进行风险跟踪。
     </p>
     <p>
         风险列表：
@@ -33,6 +31,7 @@
     <table style="withd:600px" border="1">
         <thead>
         <tr>
+            <th>项目ID</th>
             <th>风险ID</th>
             <th>风险描述</th>
             <th>类型</th>
@@ -43,6 +42,7 @@
         <tbody>
         <!--/*@thymesVar id="risks" type="com.ecnu.achieveit.modelview.RiskView"*/-->
         <tr th:each="risk : ${risks}">
+            <td th:text="${risk.projectId}"></td>
             <td th:text="${risk.riskId}"></td>
             <td th:text="${risk.description}"></td>
             <td th:text="${risk.type}"></td>

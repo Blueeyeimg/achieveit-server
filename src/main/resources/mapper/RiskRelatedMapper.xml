@@ -11,6 +11,12 @@
     <id column="risk_related_id" jdbcType="VARCHAR" property="riskRelatedId" />
   </resultMap>
 
+    <resultMap id="EmployeeResultMap" type="com.ecnu.achieveit.model.Employee">
+        <id column="employee_id" jdbcType="VARCHAR" property="employeeId" />
+        <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+    </resultMap>
+
     <sql id="Base_Column_List">
         project_id, risk_id, risk_related_id
     </sql>
@@ -76,6 +82,13 @@
         from risk_related
         where project_id = #{projectId,jdbcType=VARCHAR}
         and risk_id = #{riskId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectRelates" resultMap="EmployeeResultMap">
+        select DISTINCT
+        employee_id,employee_name,email
+        from risk_related JOIN employee
+        where employee.employee_id = risk_related.risk_related_id
     </select>
 
 </mapper>

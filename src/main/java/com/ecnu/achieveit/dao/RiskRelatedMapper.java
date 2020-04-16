@@ -1,5 +1,6 @@
 package com.ecnu.achieveit.dao;
 
+import com.ecnu.achieveit.model.Employee;
 import com.ecnu.achieveit.model.RiskRelatedKey;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,5 +36,9 @@ public interface RiskRelatedMapper {
 
 
     List<RiskRelatedKey> selectByProjectRiskId(@Param("projectId") String projectId, @Param("riskId") String riskId);
+
+
+    List<Employee> selectRelates();
+
 
 }

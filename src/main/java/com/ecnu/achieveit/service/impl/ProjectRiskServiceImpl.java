@@ -4,18 +4,21 @@ import com.ecnu.achieveit.constant.ProjectRole;
 import com.ecnu.achieveit.dao.ProjectMemberMapper;
 import com.ecnu.achieveit.dao.ProjectRiskMapper;
 import com.ecnu.achieveit.dao.RiskRelatedMapper;
-import com.ecnu.achieveit.model.ProjectMember;
-import com.ecnu.achieveit.model.ProjectRisk;
-import com.ecnu.achieveit.model.ProjectRiskKey;
-import com.ecnu.achieveit.model.RiskRelatedKey;
+import com.ecnu.achieveit.model.*;
 import com.ecnu.achieveit.modelview.RiskTrackEmail;
+import com.ecnu.achieveit.modelview.RiskView;
+import com.ecnu.achieveit.service.IMailService;
 import com.ecnu.achieveit.service.ProjectMemberService;
 import com.ecnu.achieveit.service.ProjectRiskService;
+import com.ecnu.achieveit.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 
@@ -29,6 +32,12 @@ public class ProjectRiskServiceImpl implements ProjectRiskService {
     @Autowired(required = false)
     private RiskRelatedMapper riskRelatedMapper;
 
+    @Autowired
+    private IMailService iMailService;
+
+    @Qualifier("templateEngine")
+    @Autowired
+    private TemplateEngine templateEngine;
 
     @Override
     public List<ProjectRisk> queryByProjectId(String projectId) {
@@ -109,27 +118,68 @@ public class ProjectRiskServiceImpl implements ProjectRiskService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 9 ? * 6")
-    public void autoEmailToManager() {
+    @Scheduled(cron = "0 0 9 ? * 5")
+    public void autoEmailToManager() throws Exception{
 
         List<RiskTrackEmail> projects = riskMapper.selectProjectListWithManager();
 
         for(RiskTrackEmail project : projects){
             List<ProjectRisk> risks = riskMapper.selectByProjectId(project.getProjectId());
+
+            if(ObjectUtils.isEmpty(risks)){
+                continue;
+            }
             String to = project.getManagerEmail();
             String name = project.getManagerName();
             String projectName = project.getProjectName();
-            StringBuffer riskMassage = new StringBuffer();
+            List<RiskView> riskViews = RiskView.convertFromProjectRisk(risks);
 
-            for(ProjectRisk risk : risks){
-                riskMassage.append("风险");
+            LogUtil.i("即将发送邮件给" + to);
+            try {
+                Context context = new Context();
+                context.setVariable("user", name);
+                context.setVariable("project_name", projectName);
+                context.setVariable("risks", riskViews);
+                String emailContent = templateEngine.process("risk_manager_reminder", context);
+
+                iMailService.sendHtmlMail(to, "请及时召开风险跟踪会议", emailContent);
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                LogUtil.i("发送邮件失败");
+                return ;
             }
+            LogUtil.i("已经向项目经理 " + to + "发送邮件");
         }
 
     }
 
     @Override
-    public List<RiskTrackEmail> test(){
-        return riskMapper.selectProjectListWithManager();
+    @Scheduled(cron = "0 0 9 ? * 5")
+    public void autoEmailToRelates() throws Exception{
+        List<Employee> relates = riskRelatedMapper.selectRelates();
+
+        for(Employee relate : relates){
+            String to = relate.getEmail();
+            String name = relate.getEmployeeName();
+            List<RiskView> riskViews = RiskView.convertFromProjectRisk(riskMapper.selectByRelatedId(relate.getEmployeeId()));
+
+            LogUtil.i("即将发送邮件给" + to);
+            try {
+                Context context = new Context();
+                context.setVariable("user", name);
+                context.setVariable("risks", riskViews);
+                String emailContent = templateEngine.process("risk_relates_reminder", context);
+
+                iMailService.sendHtmlMail(to, "请及时进行风险跟踪", emailContent);
+
+            }catch (Exception ex){
+                ex.printStackTrace();
+                LogUtil.i("发送邮件失败");
+                return ;
+            }
+            LogUtil.i("已经向风险相关者 " + to + "发送邮件");
+        }
     }
+
 }

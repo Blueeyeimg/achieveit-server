@@ -31,11 +31,6 @@ public class RiskController {
     @Autowired
     private ProjectMemberService projectMemberService;
 
-    @GetMapping("/risktest")
-    public Object test(){
-        return RestResponse.success(riskService.test());
-    }
-
     @PostMapping("/upload/risk")
     public Object upload(MultipartFile file){
 

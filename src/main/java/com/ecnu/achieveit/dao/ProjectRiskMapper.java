@@ -62,4 +62,5 @@ public interface ProjectRiskMapper {
     List<ProjectRisk> selectByRelatedId(String relatedId);
 
     List<RiskTrackEmail> selectProjectListWithManager();
+
 }

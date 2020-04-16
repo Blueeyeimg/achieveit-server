@@ -67,12 +67,8 @@ class TimesheetControllerTest {
         assertNotNull(response.getString("data"));
 
         JSONArray projectIds = response.getJSONArray("data");
-        assertTrue(projectIds.size() == 2);
+        assertTrue(projectIds.size() == 3);
 
-        String projectId1 = projectIds.getString(0);
-        String projectId2 = projectIds.getString(1);
-        assertTrue(projectId1.equals("2019-dfs3-M-09"));
-        assertTrue(projectId2.equals("2020-adgd-D-04"));
     }
 
     @Test

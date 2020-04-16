@@ -31,7 +31,8 @@ public interface ProjectRiskService {
 
     boolean modifyRelates(List<RiskRelatedKey> riskRelatedKeys);
 
-    void autoEmailToManager();
+    void autoEmailToManager() throws Exception;
 
-    List<RiskTrackEmail> test();
+    void autoEmailToRelates() throws Exception;
+
 }

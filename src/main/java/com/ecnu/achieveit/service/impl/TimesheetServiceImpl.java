@@ -6,14 +6,15 @@ import com.ecnu.achieveit.service.TimesheetService;
 import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
-
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TimesheetServiceImpl implements TimesheetService {
     @Autowired(required = false)
     private ProjectMemberMapper projectMemberMapper;
