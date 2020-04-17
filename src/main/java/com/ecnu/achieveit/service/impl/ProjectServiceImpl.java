@@ -3,9 +3,11 @@ package com.ecnu.achieveit.service.impl;
 import com.ecnu.achieveit.constant.ProjectState;
 import com.ecnu.achieveit.dao.AssetItemMapper;
 import com.ecnu.achieveit.dao.ProjectBasicInfoMapper;
+import com.ecnu.achieveit.dao.ProjectMemberMapper;
 import com.ecnu.achieveit.model.AssetItem;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
 import com.ecnu.achieveit.model.ProjectId;
+import com.ecnu.achieveit.model.ProjectMemberKey;
 import com.ecnu.achieveit.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired(required = false)
     private ProjectBasicInfoMapper projectBasicInfoMapper;
+
+    @Autowired(required = false)
+    private ProjectMemberMapper projectMemberMapper;
 
     @Autowired(required = false)
     private AssetItemMapper assetItemMapper;
@@ -108,4 +113,19 @@ public class ProjectServiceImpl implements ProjectService {
 
         return result;
     }
+
+    @Override
+    public boolean deleteProjectMemberByKey(ProjectMemberKey projectMemberKey) {
+        int result = projectMemberMapper.deleteByPrimaryKey(projectMemberKey);
+
+        return result!=0;
+    }
+
+    @Override
+    public boolean deleteProjectInfoByKey(String projectId) {
+        int result = projectBasicInfoMapper.deleteByPrimaryKey(projectId);
+
+        return result!=0;
+    }
+
 }

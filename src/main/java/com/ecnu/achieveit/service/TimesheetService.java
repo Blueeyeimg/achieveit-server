@@ -34,6 +34,8 @@ public interface TimesheetService {
 
     List<Timesheet> queryTimesheetByEmployeeId(String employeeId);
 
+    List<Timesheet> queryTimesheetByDate(Date date, String employeeId);
+
     Timesheet queryByPrimaryKey(Integer timesheetId);
 
 

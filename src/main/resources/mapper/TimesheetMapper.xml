@@ -193,4 +193,9 @@
     SET state = #{state,jdbcType=VARCHAR}
     WHERE timesheet_id = #{timesheetId,jdbcType=INTEGER}
   </update>
+  <select id="selectTimesheetByDate"  resultMap="BaseResultMap">
+    SELECT *
+    FROM timesheet
+    WHERE employee_id = #{employeeId,jdbcType=VARCHAR} AND date = #{date,jdbcType=DATE} AND state = "已提交"
+  </select>
 </mapper>

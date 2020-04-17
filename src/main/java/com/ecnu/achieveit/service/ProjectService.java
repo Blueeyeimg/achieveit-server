@@ -4,6 +4,7 @@ import com.ecnu.achieveit.constant.ProjectState;
 import com.ecnu.achieveit.model.AssetItem;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
 import com.ecnu.achieveit.model.ProjectId;
+import com.ecnu.achieveit.model.ProjectMemberKey;
 
 import java.util.List;
 
@@ -17,6 +18,10 @@ public interface ProjectService {
     boolean updateProjectStateById(String projectId, String projectState);
 
     boolean updateOutputLinkOfProjectInfo(String projectId,String outputLink);
+
+    boolean deleteProjectMemberByKey(ProjectMemberKey projectMemberKey);
+
+    boolean deleteProjectInfoByKey(String projectId);
 
     ProjectBasicInfo querryProjectByPrimaryKey(String projectId);
 

@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * timesheet
@@ -27,7 +27,7 @@ public class Timesheet implements Serializable {
 
     private String secondaryActivity;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     private Date date;
 
@@ -113,7 +113,7 @@ public class Timesheet implements Serializable {
         this.date = date;
     }
 
-    public Date getStartTime() {
+    public Time getStartTime() {
         return startTime;
     }
 
@@ -121,7 +121,7 @@ public class Timesheet implements Serializable {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Time getEndTime() {
         return endTime;
     }
 

@@ -3,6 +3,7 @@ package com.ecnu.achieveit.dao;
 import com.ecnu.achieveit.model.Timesheet;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface TimesheetMapper {
@@ -21,6 +22,9 @@ public interface TimesheetMapper {
     List<Timesheet> selectTimesheetByBossId(String bossId);
 
     List<Timesheet> selectIimesheetByEmployeeId(String employeeId);
+
+    List<Timesheet> selectTimesheetByDate(@Param("date") Date date,
+                                          @Param("employeeId")String employeeId);
 
     int updateStateByTimesheetId(@Param("timesheetId") Integer timesheetId,
                                  @Param("state") String state);

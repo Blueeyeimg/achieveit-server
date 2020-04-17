@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ecnu.achieveit.constant.ProjectState.ARCHIVED;
+import static com.ecnu.achieveit.constant.ProjectState.*;
 
 @RestController
 public class ProjectBasicInfoController {
@@ -130,9 +130,67 @@ public class ProjectBasicInfoController {
         String state = projectBasicInfo1.getState();
         if(state.equals(ARCHIVED.getState())) return RestResponse.fail("不能更新状态为已归档的项目");
 
-        Boolean result = projectService.updateProject(projectBasicInfo);
+        boolean result = projectService.updateProject(projectBasicInfo);
         if(!result)return RestResponse.fail();
-        LogUtil.i("项目"+projectId.toString()+"更新成功");
+        LogUtil.i("项目"+projectId+"更新成功");
         return  RestResponse.success();
+    }
+
+    @DeleteMapping("/deleteprojectinfo/{projectId}")
+    public Object deleteProjectInfo(@PathVariable("projectId")String projectId,
+                                    @RequestAttribute("userId")String userId){
+        ProjectBasicInfo projectBasicInfo = projectService.querryProjectByPrimaryKey(projectId);
+        if(!projectBasicInfo.getState().equals(DISAPPROVED.getState())){
+            LogUtil.i("该项目的状态为："+projectBasicInfo.getState());
+            return RestResponse.fail("只能删除项目状态为"+DISAPPROVED.getState()+"的项目");
+        }
+        ProjectMemberKey projectMemberKey = new ProjectMemberKey(projectId,userId);
+        ProjectMember user = projectMemberService.queryMemberByKey(projectMemberKey);
+        if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
+            LogUtil.i("用户在项目中的角色为" + user.getRole());
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法删除项目基本信息");
+        }
+
+        boolean result1 = projectService.deleteProjectMemberByKey(projectMemberKey);
+        if(!result1)return RestResponse.fail("删除项目"+projectId+"的成员"+userId+"失败");
+        LogUtil.i("成功删除项目"+projectId+"中的项目经理"+userId);
+        boolean result2 = projectService.deleteProjectInfoByKey(projectId);
+        if(!result2)return RestResponse.fail("删除项目"+projectId+"失败");
+        LogUtil.i("成功删除项目"+projectId);
+        return RestResponse.success();
+    }
+
+    @GetMapping("/getstate/{projectId}")
+    public Object getState(@PathVariable("projectId")String projectId,
+                           @RequestAttribute("userId")String userId){
+        ProjectBasicInfo projectBasicInfo = projectService.querryProjectByPrimaryKey(projectId);
+        String state = projectBasicInfo.getState();
+        if(!(state.equals(APPROVED.getState()) || state.equals(PROCESSING.getState())
+            || state.equals(DELIVERED.getState()) || state.equals(FINISHED.getState()) )){
+            LogUtil.i("项目"+projectId+"的状态为"+state);
+            return RestResponse.fail("当前状态的项目不支持调用该api");
+        }
+        ProjectMemberKey projectMemberKey = new ProjectMemberKey(projectId,userId);
+        ProjectMember user = projectMemberService.queryMemberByKey(projectMemberKey);
+        if(ObjectUtils.isEmpty(user) || !ProjectRole.MANAGER.in(user.getRole())){
+            LogUtil.i("用户在项目中的角色为" + user.getRole());
+            return RestResponse.noPermission("当前用户不是该项目的项目经理，无法更改项目状态");
+        }
+
+        String result = nextState(state);
+        return RestResponse.success(result);
+    }
+
+    /**
+     *
+     * @param state
+     * @return nextState
+     */
+    public static String nextState(String state){
+        if(state.equals(APPROVED.getState()))return PROCESSING.getState();
+        else if(state.equals(PROCESSING.getState()))return DELIVERED.getState();
+        else if(state.equals(DELIVERED.getState()))return FINISHED.getState();
+        else if(state.equals(FINISHED.getState()))APPLYINGARCHIVE.getState();
+        return "";
     }
 }

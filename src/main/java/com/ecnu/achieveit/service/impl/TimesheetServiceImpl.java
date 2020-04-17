@@ -129,6 +129,11 @@ public class TimesheetServiceImpl implements TimesheetService {
     }
 
     @Override
+    public List<Timesheet> queryTimesheetByDate(Date date, String employeeId) {
+        return timesheetMapper.selectTimesheetByDate(date,employeeId);
+    }
+
+    @Override
     public boolean updateStateByTimesheetId(Integer timesheetId, String state) {
         int result = timesheetMapper.updateStateByTimesheetId(timesheetId,state);
         return result!=0;
