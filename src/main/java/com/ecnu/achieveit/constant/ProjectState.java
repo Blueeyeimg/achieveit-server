@@ -54,4 +54,10 @@ public enum ProjectState {
                 || state.equals(ARCHIVED.getState())) return true;
         return false;
     }
+
+    public static boolean inProcess(String state){
+        return state.equals(APPROVED.getState())
+                || state.equals(PROCESSING.getState())
+                || state.equals(DELIVERED.getState());
+    }
 }

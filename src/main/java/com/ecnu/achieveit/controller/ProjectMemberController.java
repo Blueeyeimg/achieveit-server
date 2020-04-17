@@ -87,10 +87,6 @@ public class ProjectMemberController {
 
     @DeleteMapping("/member")
     public Object delete(@RequestAttribute("userId") String userId, ProjectMember projectMember){
-        LogUtil.i("userId: " + userId);
-        LogUtil.i("ProjectMember: " + projectMember.toString());
-        LogUtil.i("projectId: " + projectMember.getProjectId());
-        LogUtil.i("employeeId: " + projectMember.getEmployeeId());
 
         ProjectMember user = projectMemberService.queryMemberByKey(new ProjectMemberKey(projectMember.getProjectId(),userId));
 
@@ -104,6 +100,8 @@ public class ProjectMemberController {
 
         ProjectMember oldMember = projectMemberService.queryMemberByKey(projectMember);
 
+        LogUtil.i("ProjectMember: " + oldMember.toString());
+
         if(ProjectRole.isImportant(oldMember.getRole())){
             return RestResponse.noPermission("不能删除QA、EPG或者项目经理");
         }
@@ -116,7 +114,12 @@ public class ProjectMemberController {
 
     @GetMapping("/role")
     public Object getRole(){
-        return RestResponse.success(Arrays.stream(ProjectRole.values()).map(ProjectRole::getRole).collect(Collectors.toList()));
+        return RestResponse.success(ProjectRole.addibleRole());
+    }
+
+    @GetMapping("/addibleEmployee/{projectId}")
+    public Object getAddibleEmployees(@PathVariable("projectId") String projectId){
+        return RestResponse.success(projectMemberService.queryAddibleEmployees(projectId));
     }
 
     @GetMapping("/memberinfo/{projectId}")

@@ -1,5 +1,6 @@
 package com.ecnu.achieveit.service;
 
+import com.ecnu.achieveit.model.Employee;
 import com.ecnu.achieveit.model.ProjectMember;
 import com.ecnu.achieveit.model.ProjectMemberKey;
 
@@ -20,4 +21,6 @@ public interface ProjectMemberService {
     boolean deleteMemberByKey(ProjectMemberKey projectMemberKey);
 
     List<ProjectMember> queryMemberByRole(String projectId, String role);
+
+    List<Employee> queryAddibleEmployees(String projectId);
 }
