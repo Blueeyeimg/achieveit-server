@@ -2,11 +2,13 @@ package com.ecnu.achieveit.service.impl;
 
 import com.ecnu.achieveit.constant.EmployeeTitle;
 import com.ecnu.achieveit.constant.ProjectRole;
+import com.ecnu.achieveit.constant.ProjectState;
 import com.ecnu.achieveit.dao.ProjectMemberMapper;
 import com.ecnu.achieveit.model.Employee;
 import com.ecnu.achieveit.model.ProjectBasicInfo;
 import com.ecnu.achieveit.model.ProjectMember;
 import com.ecnu.achieveit.model.ProjectMemberKey;
+import com.ecnu.achieveit.service.EmployeeService;
 import com.ecnu.achieveit.service.ProjectMemberService;
 import com.ecnu.achieveit.service.ProjectService;
 import com.ecnu.achieveit.util.LogUtil;
@@ -17,6 +19,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -28,8 +31,16 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     @Override
     public boolean addProjectMember(ProjectMember projectMember) {
+
+        if(!ProjectRole.isImportant(projectMember.getRole())
+                && !canManageMember(projectMember.getProjectId())){
+            return false;
+        }
 
         if(projectMember.getBossInProjectId() == null){
             List<ProjectMember> managers = queryMemberByRole(projectMember.getProjectId(),ProjectRole.MANAGER.getRole());
@@ -39,7 +50,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
             projectMember.setBossInProjectId(managers.get(0).getEmployeeId());
         }
 
-        /*应当先插入再调用权限修改，若权限修改失败->再次尝试 OR 抛出异常，数据回滚。下几个函数也有类似问题。*/
+        /*应当先插入再调用权限修改，若权限修改失败->再次尝试 OR 抛出异常，数据回滚。下几个函数也有类似问题。
+        * 在刪除時特別要注意，成員刪除後是不能查詢到相關信息的 獲取的project是空的
+        * */
         if(updatePermissionToServer(projectMember)){
             return projectMemberMapper.insertSelective(projectMember) == 1;
         }
@@ -54,15 +67,20 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         if(role.equals(ProjectRole.EPG.getRole())){
             inTimSheetModule = 0;
         }
-        LogUtil.i("member create start");
+
         ProjectMember projectMember = new ProjectMember(projectId, userId, bossInProjectId, role, inTimSheetModule, false);
 
-        LogUtil.i("member create end");
+
         return addProjectMember(projectMember);
     }
 
     @Override
     public boolean modifyMemberPermission(ProjectMember projectMember) {
+
+        if(!canManageMember(projectMember.getProjectId())){
+            return false;
+        }
+
         if(updatePermissionToServer(projectMember)){
             return projectMemberMapper.updateByPrimaryKeySelective(projectMember) == 1;
         }
@@ -82,19 +100,37 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public boolean deleteMemberByKey(ProjectMemberKey projectMemberKey) {
-        boolean result = projectMemberMapper.deleteByPrimaryKey(projectMemberKey) == 1;
 
-        /*去除相关权限*/
-        if(result){
-            removePermissionToServer(projectMemberKey);
+        if(!canManageMember(projectMemberKey.getProjectId())){
+            return false;
         }
 
-        return result;
+        if(removePermissionToServer(projectMemberKey)){
+            return projectMemberMapper.deleteByPrimaryKey(projectMemberKey) == 1;
+        }
+
+        return false;
     }
 
     @Override
     public List<ProjectMember> queryMemberByRole(String projectId, String role) {
         return projectMemberMapper.selectListByRole(projectId, role);
+    }
+
+    @Override
+    public List<Employee> queryAddibleEmployees(String projectId) {
+        List<Employee> employees = employeeService.queryEmployees();
+        List<String> projectMemberIds = queryMemberList(projectId).stream()
+                .map(ProjectMember::getEmployeeId)
+                .collect(Collectors.toList());
+
+        employees = employees.stream()
+                    .filter(e ->
+                            e.getTitle().equals(EmployeeTitle.DEVELOPER.getTitleName())
+                                    || e.getTitle().equals(EmployeeTitle.TEST.getTitleName()))
+                    .filter(e -> !projectMemberIds.contains(e.getEmployeeId()))
+                    .collect(Collectors.toList());
+        return employees;
     }
 
     private boolean removePermissionToServer(ProjectMemberKey projectMemberKey){
@@ -157,7 +193,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                         projectMember.getRole(),
                         new Date(),
                         new Date(),
-                        projectMember.getInEmailList().equals(1));
+                        new Integer(1).equals(projectMember.getInEmailList()));
             }
         }else{
             callGitShell(projectBasicInfo.getGitAddress(),
@@ -180,7 +216,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                     projectMember.getRole(),
                     new Date(),
                     new Date(),
-                    projectMember.getInEmailList().equals(1));
+                    new Integer(1).equals(projectMember.getInEmailList()));
         }
 
         return true;
@@ -208,5 +244,17 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         //获取项目邮件列表服务器地址，根据permit和user email调用相应的shell
         LogUtil.i("邮件列表权限变更，已在邮件服务器更新权限");
         return true;
+    }
+
+    private boolean canManageMember(String projectId){
+        ProjectBasicInfo projectBasicInfo = projectService.querryProjectByPrimaryKey(projectId);
+
+        if(ProjectState.inProcess(projectBasicInfo.getState())
+                && !ObjectUtils.isEmpty(projectBasicInfo.getGitAddress())
+                && !ObjectUtils.isEmpty(projectBasicInfo.getFileSystemAddress())){
+            return true;
+        }
+
+        return false;
     }
 }

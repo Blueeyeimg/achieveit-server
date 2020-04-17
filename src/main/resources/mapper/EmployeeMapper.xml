@@ -169,7 +169,7 @@
   </update>
   <select id="selectEmployeeList"  resultMap="BaseResultMap">
     select
-      <include refid="Base_Column_List" />
+      <include refid="Basic_Column_List" />
     from employee
   </select>
   <select id="selectBasicEmployeeList"  resultMap="BaseResultMap">
