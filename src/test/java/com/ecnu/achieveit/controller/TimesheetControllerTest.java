@@ -49,7 +49,7 @@ class TimesheetControllerTest {
 
     }
 
-    @Test
+   /* @Test
     void listProjectId() throws Exception{
         MockHttpServletRequestBuilder request =
                 MockMvcRequestBuilders.get("/timesheet/projectid")
@@ -69,7 +69,7 @@ class TimesheetControllerTest {
         JSONArray projectIds = response.getJSONArray("data");
         assertTrue(projectIds.size() == 3);
 
-    }
+    }*/
 
     @Test
     void listPrimaryFunction() throws Exception{
