@@ -190,7 +190,7 @@ public class ProjectBasicInfoController {
         if(state.equals(APPROVED.getState()))return PROCESSING.getState();
         else if(state.equals(PROCESSING.getState()))return DELIVERED.getState();
         else if(state.equals(DELIVERED.getState()))return FINISHED.getState();
-        else if(state.equals(FINISHED.getState()))APPLYINGARCHIVE.getState();
+        else if(state.equals(FINISHED.getState()))return APPLYINGARCHIVE.getState();
         return "";
     }
 }
