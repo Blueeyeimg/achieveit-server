@@ -57,6 +57,10 @@ public class NewProjectController {
         if(!employeeService.checkTitle(userId,EmployeeTitle.MANAGER.getTitleName())){
             return RestResponse.fail("该用户不是项目经理!");
         }
+
+        if(!projectBasicInfo.getExpStartDate().before(projectBasicInfo.getExpEndDate())){
+            return RestResponse.fail("预期结束时间必须在开始时间之前");
+        }
         projectBasicInfo.setState(ProjectState.APPLIED.getState());
         if(newProjectFlowService.createProject(userId,projectBasicInfo)){
             return RestResponse.success(projectBasicInfo.getProjectId());

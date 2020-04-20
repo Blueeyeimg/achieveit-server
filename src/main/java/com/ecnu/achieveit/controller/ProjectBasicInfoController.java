@@ -130,6 +130,9 @@ public class ProjectBasicInfoController {
         String state = projectBasicInfo1.getState();
         if(state.equals(ARCHIVED.getState())) return RestResponse.fail("不能更新状态为已归档的项目");
 
+        if(!projectBasicInfo.getExpStartDate().before(projectBasicInfo.getExpEndDate())){
+            return RestResponse.fail("预期结束时间必须在开始时间之后");
+        }
         boolean result = projectService.updateProject(projectBasicInfo);
         if(!result)return RestResponse.fail();
         LogUtil.i("项目"+projectId+"更新成功");

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -38,7 +39,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public boolean updateProject(ProjectBasicInfo projectBasicInfo) {
         Integer result = projectBasicInfoMapper.updateByPrimaryKeySelective(projectBasicInfo);
-
         return result!=0;
     }
 

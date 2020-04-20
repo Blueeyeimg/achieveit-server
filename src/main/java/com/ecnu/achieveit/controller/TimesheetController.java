@@ -87,7 +87,7 @@ public class TimesheetController {
 
         //如果提交工时信息
         if(record.getState().equals(COMMITED.getState())){
-            //先判断是否超时
+            //先判断是否超时三天
             Date previousDate = record.getDate();
             LogUtil.i("previousDate = " + previousDate);
             Date currentDate = new java.sql.Date(System.currentTimeMillis());
@@ -99,6 +99,10 @@ public class TimesheetController {
             LogUtil.i("日期为"+record.getDate()+"的工时时间为"+time+"毫秒");
             if(time > oneDay){
                 return RestResponse.fail("错误：日期为"+record.getDate()+"的已提交工时信息超过24小时！");
+            }
+            //工时的结束时间必须在开始时间之后
+            if(!record.getStartTime().before(record.getEndTime())){
+                return RestResponse.fail("错误：结束时间必须在开始时间之后");
             }
         }
 
@@ -135,6 +139,10 @@ public class TimesheetController {
             LogUtil.i("日期为"+record.getDate()+"的工时时间为"+time+"毫秒");
             if(time > oneDay){
                 return RestResponse.fail("错误：日期为"+record.getDate()+"的已提交工时信息超过24小时！");
+            }
+            //工时的结束时间必须在开始时间之后
+            if(!record.getStartTime().before(record.getEndTime())){
+                return RestResponse.fail("错误：结束时间必须在开始时间之后");
             }
         }
 
