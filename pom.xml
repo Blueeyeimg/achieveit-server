@@ -109,7 +109,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.67</version>
+            <version>1.2.83</version>
         </dependency>
 
         <!--POI 用于Excel上传、解析、下载-->
